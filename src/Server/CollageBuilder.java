@@ -150,4 +150,25 @@ public class CollageBuilder {
 
         return image;
     }
+    
+    // This method add a black and white filter a image
+    private BufferedImage addBlackAndWhiteFilter(BufferedImage image)
+    {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        
+        int limit = 255 * 50 / 100;
+        
+        for(int i = 0, j; i < width; ++i) {
+            for(j = 0; j < height; ++j) {
+                Color color = new Color(image.getRGB(i, j));
+                if(limit <= color.getRed() || limit <= color.getGreen() || limit <= color.getBlue()) {
+                    image.setRGB(i, j, Color.WHITE.getRGB());
+                } else {
+                    image.setRGB(i, j, Color.BLACK.getRGB());
+                }
+            }
+        }
+        return image;
+    }
 }
