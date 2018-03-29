@@ -43,7 +43,7 @@ public class CollageBuilder {
 
     public BufferedImage createCollageWithImages(int width, int height, boolean addBorder, Filter filter) {
         BufferedImage backGround = createBackGroundImage(width, height, addBorder, filter);
-
+        
         // add filter
         if (filter != null) {
             switch (filter) {
@@ -58,12 +58,12 @@ public class CollageBuilder {
                     break;
             }
         }
-
-        BufferedImage textImage = new BufferedImage(
-                backGround.getWidth(),
-                backGround.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+        
+        BufferedImage textImage = new BufferedImage(backGround.getWidth(), backGround.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = textImage.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, textImage.getWidth(), textImage.getHeight());
+        
         FontRenderContext frc = g.getFontRenderContext();
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, backGround.getWidth()/2);
         GlyphVector gv = font.createGlyphVector(frc, "USC");
@@ -75,14 +75,15 @@ public class CollageBuilder {
         g.drawImage(backGround,0,0,null);
         g.setClip(null);
         g.setStroke(new BasicStroke(0));
-//        g.setRenderingHint(
-//            RenderingHints.KEY_ANTIALIASING,
-//            RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(Color.BLACK);
+        g.setRenderingHint(
+                           RenderingHints.KEY_ANTIALIASING,
+                           RenderingHints.VALUE_ANTIALIAS_ON);
         g.draw(shape);
         g.dispose();
-
+        
         System.out.println("Image finished");
-
+        
         File file = new File("test.png");
         try {
             ImageIO.write(textImage,"png",file);
@@ -90,8 +91,8 @@ public class CollageBuilder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
+        
+        
         return textImage;
     }
 
