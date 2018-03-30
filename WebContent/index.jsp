@@ -4,20 +4,52 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<style>
-	#error_msg {
-		color: red;
-	}
-</style>
+<link rel="stylesheet" href="css/loginpage.css" >
+<title>Welcome to Egalloc</title>
+<link rel="stylesheet" href="css/loginpage.css" >
+
 </head>
 <body>
-	<div id="credentials">
-		<input id="username" type="text" name="username">
-		<input id="password" type="password" name="password">
-		<button id="loginButton">Login</button>
-		<div id="error_msg"></div>
-	</div>
+	<div id="login-container">
+			
+				<div id="username-input-container" class="input-container">
+					<label>Username</label>
+					<br>
+					<input
+						id="username"
+						type = "text"
+						class ="input-box"
+						placeholder = "Enter username"
+						name="username"
+					>
+				</div>
+				<br>
+				<div id="username-input-container" class="input-container">
+					<label>Password</label>
+					<br>
+					<input
+						id="password"
+						type = "password"
+						class ="input-box"
+						placeholder = "Enter password"
+						name="password"
+					>
+				</div>
+			
+			<br>
+			<div id="buttons-container" class="input-container">
+				<button
+					id="loginButton"
+					class="login-page-button"
+				>Login</button>
+				<button
+					id="singup-button"
+					class="login-page-button"
+				>Sign Up</button> 
+			</div> 
+
+	 </div>
+	<div id="error_msg"></div>
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>

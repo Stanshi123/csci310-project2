@@ -1,0 +1,48 @@
+/* PAGE */
+html, body {
+  	width: 100%;
+	height: 100%;
+	display: block;
+	margin: 0;
+}
+
+#login-container {
+	width: 100%;
+	margin: auto;
+	margin-top: 150px;
+}
+
+.input-box {
+  width: 400px;
+  height: 20px;
+  margin: auto;
+  padding: 10px;
+  font-size: 14px;
+  border-color: #555;
+  border-width: 1px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+
+.input-container {
+	width: 500px;;
+	margin: auto;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+
+.login-page-button {
+  width: 210px;
+  height: 40px;
+  padding: 10px;
+  background-color: #555;
+  color: white;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+#error_msg {
+	color: red;
+}
