@@ -27,14 +27,12 @@ public class LoginServlet extends HttpServlet {
      */
     public LoginServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -58,6 +56,7 @@ public class LoginServlet extends HttpServlet {
 		
 		// return result (fail/success depending on SQL query)
 		String result = "fail";
+		int user_id = -1;
 		
 		int count = 0;
 		try {
@@ -68,11 +67,20 @@ public class LoginServlet extends HttpServlet {
 			statement = conn.createStatement(); // SQL statement
 			
 			// check if user provides correct login credentials
-			query = "SELECT COUNT(*) AS count FROM user WHERE username = '" + username + "' AND password = '" + password + "';";
+			query
+				= "SELECT "
+					+ "COUNT(*) AS count, "
+					+ "user_id "
+				+ "FROM user "
+				+ "WHERE username = '" + username + "' "
+					+ "AND password = '" + password + "';";
+			
 			resultSet = statement.executeQuery(query);
 
-			while (resultSet.next())
+			while (resultSet.next()) {
 				count = resultSet.getInt("count");
+				user_id = resultSet.getInt("user_id");
+			}
 
 			// if count returns 1, then the username/password combination matches the database
 			if (count == 1)
@@ -95,12 +103,11 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		if (count == 1)
-			session.setAttribute("username", username); // Set session username if login is successful
+			session.setAttribute("user_id", user_id); // Set session username if login is successful
 
 		// return ajax response
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(result);
 	}
-
 }
