@@ -25,35 +25,35 @@ Then(/^there is a collage height pixel input$/) do
 end
 
 Then(/^there is a radio button of filter option No filter$/) do
-  page.should have_selector("button[type=radio name=filter value=No filter]")
+  page.should have_selector("input[type=radio name=filter value=No filter]")
 end
 
 Then(/^there is a radio button of filter option Black and White$/) do
-  page.should have_selector("button[type=radio name=filter value=Black and White]")
+  page.should have_selector("input[type=radio name=filter value=Black and White]")
 end
 
 Then(/^there is a radio button of filter option Grayscale$/) do
-  page.should have_selector("button[type=radio name=filter value=Grayscale]")
+  page.should have_selector("input[type=radio name=filter value=Grayscale]")
 end
 
 Then(/^there is a radio button of filter option Sepia$/) do
-  page.should have_selector("button[type=radio name=filter value=Sepia]")
+  page.should have_selector("input[type=radio name=filter value=Sepia]")
 end
 
 Then(/^there is a radio button of border option On$/) do
-  page.should have_selector("button[type=radio name=border value=On]")
+  page.should have_selector("input[type=radio name=border value=On]")
 end
 
 Then(/^there is a radio button of border option Off$/) do
-  page.should have_selector("button[type=radio name=border value=Off]")
+  page.should have_selector("input[type=radio name=border value=Off]")
 end
 
 Then(/^there is a radio button of rotation option On$/) do
-  page.should have_selector("button[type=radio name=rotation value=On]")
+  page.should have_selector("input[type=radio name=rotation value=On]")
 end
 
 Then(/^there is a radio button of rotation option Off$/) do
-  page.should have_selector("button[type=radio name=rotation value=Off]")
+  page.should have_selector("input[type=radio name=rotation value=Off]")
 end
 
 Then(/^there is a save to history button$/) do
@@ -61,7 +61,7 @@ Then(/^there is a save to history button$/) do
 end
 
 Then(/^there is an export collage button$/) do
-  pexpect(page.find_by_id("save-collage-button").native.text).to eq "Export Collage"
+  pexpect(page.find_by_id("export-collage-button").native.text).to eq "Export Collage"
 end
 
 Then(/^there is a build collage button$/) do
