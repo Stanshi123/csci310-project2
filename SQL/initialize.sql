@@ -2,7 +2,7 @@
 -- run this file only once or when creating a whole new environment
 
 -- create schema
-CREATE SCHEMA IF NOT EXISTS `scrumdb` DEFAULT CHARACTER SET utf8 ;
+CREATE DATABASE IF NOT EXISTS `scrumdb` DEFAULT CHARACTER SET utf8 ;
 USE `scrumdb` ;
 
 -- create table for users
