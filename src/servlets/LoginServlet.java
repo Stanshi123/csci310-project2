@@ -42,35 +42,41 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		HttpSession session = request.getSession();
+		
+		// get username and password from index.jsp
 		String username, password;
-
 		username = request.getParameter("username");
 		password = request.getParameter("password");
 
-		Statement st = null;
-		ResultSet rs = null;
+		// set SQL variables
+		Statement statement = null;
+		ResultSet resultSet = null;
 		Connection conn = null;
 		String query = "";
-
+		
+		// return result (fail/success depending on SQL query)
 		String result = "fail";
+		
 		int count = 0;
 		try {
+			// establish connection
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=root&useSSL=false");
-			st = conn.createStatement();
-
+			
+			statement = conn.createStatement(); // SQL statement
+			
+			// check if user provides correct login credentials
 			query = "SELECT COUNT(*) AS count FROM user WHERE username = '" + username + "' AND password = '" + password + "';";
-			rs = st.executeQuery(query);
+			resultSet = statement.executeQuery(query);
 
-			while (rs.next()) {
-				count = rs.getInt("count");
-			}
+			while (resultSet.next())
+				count = resultSet.getInt("count");
 
-			if (count == 1) {
+			// if count returns 1, then the username/password combination matches the database
+			if (count == 1)
 				result = "success";
-			}
 			
 		} catch (SQLException sqle) {
 			System.out.println ("SQLException: " + sqle.getMessage());
@@ -78,22 +84,20 @@ public class LoginServlet extends HttpServlet {
 			System.out.println ("ClassNotFoundException: " + cnfe.getMessage());
 		} finally {
 			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (st != null) {
-					st.close();
-					}
-				if (conn != null) {
-					conn.close();
-				}
+				// close connections
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (conn != null) conn.close();
+				
 			} catch (SQLException sqle) {
 				System.out.println("sqle: " + sqle.getMessage());
 			}
 		}
 
-		session.setAttribute("username", username); // Set session attribute to created CollageManager
+		if (count == 1)
+			session.setAttribute("username", username); // Set session username if login is successful
 
+		// return ajax response
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(result);
