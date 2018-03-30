@@ -39,14 +39,14 @@ public class APICommunicator {
 
     // The images vector's add method are overridden, so that it won't exceed IMAGE_NUMBER images.
     // And it needs to be thread-safe. So we use vector.
-    private List<BufferedImage> images = new Vector<BufferedImage>() {
+    protected List<BufferedImage> images = new Vector<BufferedImage>() {
         @Override
         public boolean add(BufferedImage image) {
             return size() < IMAGE_NUMBER && super.add(image);
         }
     };
     // This is the blockingDeque which holds all the URLs
-    private BlockingDeque<URL> urls = new LinkedBlockingDeque<>();
+    protected BlockingDeque<URL> urls = new LinkedBlockingDeque<>();
 
     public APICommunicator() {
     	super();
@@ -148,7 +148,7 @@ public class APICommunicator {
     } */
 
     // This method send request for keyword to the Google Custom Search API and retrieve 10 images back.
-    private void sendRequestForKeyWord(int startIndex) {
+    protected void sendRequestForKeyWord(int startIndex) {
 
         // Create Query
         String url = REQUEST_URL;
@@ -185,7 +185,7 @@ public class APICommunicator {
     }
 
     // This method extract image from response and add to the blocking dequeue
-    private void processAPIResponse(APIResponse apiResponse) {
+    protected void processAPIResponse(APIResponse apiResponse) {
         // Check NPE
         if (apiResponse.getItems() == null) return;
 
@@ -195,12 +195,13 @@ public class APICommunicator {
                 final URL url = new URL(item.getLink());
                 urls.add(url);
             } catch (MalformedURLException e) {
+                return;
             }
         }
     }
 
     // Process url and generate image and add to the vector
-    private void processUrlForImage(URL url) {
+    protected void processUrlForImage(URL url) {
         try {
             final HttpURLConnection connection = (HttpURLConnection) url
                     .openConnection();

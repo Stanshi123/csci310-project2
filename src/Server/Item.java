@@ -7,4 +7,8 @@ public class Item {
         return link;
     }
 
+    public Item(String link) {
+        this.link = link;
+    }
+
 }

@@ -4,13 +4,17 @@ import static org.junit.Assert.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import Server.APIResponse;
+import Server.Item;
 import org.junit.Test;
 import Server.APICommunicator;
 
-public class APICommunicatorTest {
+public class APICommunicatorTest extends APICommunicator{
 
 
 	/* This test tests the constructor as well as the getter for the APICommuncator class, the class getter should always
@@ -67,15 +71,63 @@ public class APICommunicatorTest {
 	@Test
 	public void testGetParamsStringWithEmptyString() {
 		// Constants
-	APICommunicator apicommunicator = new APICommunicator();
-	
-	// put into a map then test it
-	Map<String,String> parameters = new HashMap<>();
-	
-	try {
-		String query = apicommunicator.getParamsString(parameters);
-		assertTrue("The query is empty", query.equals(""));
-		} catch (IOException e) {
+		APICommunicator apicommunicator = new APICommunicator();
+
+		// put into a map then test it
+		Map<String,String> parameters = new HashMap<>();
+
+		try {
+			String query = apicommunicator.getParamsString(parameters);
+			assertTrue("The query is empty", query.equals(""));
+			} catch (IOException e) {
+			}
+	}
+
+	@Test
+	public void testRequestForKeyWord() {
+		sendRequestForKeyWord(1);
+	}
+
+	@Test
+	public void testProcessAPIResponseWithNullItems() {
+		// Item is null
+		APIResponse apiResponse = new APIResponse();
+		urls.clear();
+		processAPIResponse(apiResponse);
+		assertTrue(urls.isEmpty());
+	}
+
+	@Test
+	public void testProcessAPIResponseWithMarlFormedUrl() {
+		// Item is null
+		Item item = new Item("htp:/www.google.com");
+		Item[] items = {item};
+		APIResponse apiResponse = new APIResponse(items);
+		urls.clear();
+		processAPIResponse(apiResponse);
+		assertTrue(urls.isEmpty());
+	}
+
+	@Test
+	public void testProcessAPIResponse() {
+		// Item is null
+		Item item = new Item("https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg");
+		Item[] items = {item};
+		APIResponse apiResponse = new APIResponse(items);
+		urls.clear();
+		processAPIResponse(apiResponse);
+		assertTrue(urls.size() == 1);
+	}
+
+	@Test
+	public void testProcessUrlForImage() {
+		try {
+			URL url = new URL("https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg");
+			images.clear();
+			processUrlForImage(url);
+			assertTrue(images.size() == 1);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
 	}
 
