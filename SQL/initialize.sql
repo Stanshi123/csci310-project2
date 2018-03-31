@@ -23,18 +23,6 @@ CREATE TABLE IF NOT EXISTS `scrumdb`.`saved_collage` (
   CONSTRAINT `fk_saved_collage_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `scrumdb`.`user` (`user_id`);
-    
--- create table for session collages
-CREATE TABLE IF NOT EXISTS `scrumdb`.`session_collage` (
-  `session_collage_id` INT NOT NULL AUTO_INCREMENT,
-  `collage_name` VARCHAR(100) NOT NULL,
-  `collage_path` VARCHAR(200) NOT NULL,
-  `user_id` INT NOT NULL,
-  PRIMARY KEY (`session_collage_id`, `user_id`),
-  INDEX `fk_session_collage_user1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_session_collage_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `scrumdb`.`user` (`user_id`);
 
 -- user table data
 INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (1, 'anisha', 'anisha');
@@ -46,6 +34,3 @@ INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (6, 'wil
 
 -- saved collage table data
 INSERT INTO `scrumdb`.`saved_collage` (`saved_collage_id`, `collage_name`, `collage_path`, `user_id`) VALUES (1, 'test', 'path', 1);
-
--- session collage table data
-INSERT INTO `scrumdb`.`session_collage` (`session_collage_id`, `collage_name`, `collage_path`, `user_id`) VALUES (1, 'test', 'path', 1);
