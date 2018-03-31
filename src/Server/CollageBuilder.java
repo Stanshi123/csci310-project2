@@ -11,29 +11,47 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
 public class CollageBuilder {
-    private List<BufferedImage> images;
+    protected List<BufferedImage> images;
 
     private static final int NUMBER_OF_ROW = 10;
     private static final int IMAGE_PER_ROW = 15;
     private static final int BORDER_PIXEL = 3;
 
+    private String shapeKeyword = "USC";
 
-    public CollageBuilder(List<BufferedImage> images) {
+
+    public CollageBuilder() {
+        images = new ArrayList<>();
+        BufferedImage image = null;
+        try {
+            URL url = new URL("https://media0dk-a.akamaihd.net/87/16/2cda3e87c8d45e18cc7e3e931c26a244.jpg");
+            image = ImageIO.read(url);
+        } catch (Exception e) {
+            System.out.println("Read fail");
+        }
+
+        for (int i = 0; i < 30; i++) {
+            images.add(image);
+        }
+    }
+    public CollageBuilder(List<BufferedImage> images, String shapeKeyword) {
+        this.shapeKeyword = shapeKeyword;
         this.images = images;
     }
 
-    public BufferedImage createCollageWithImages(int width, int height, boolean addBorder, Filter filter) {
-        BufferedImage backGround = createBackGroundImage(width, height, addBorder, filter);
+    public BufferedImage createCollageWithImages(int width, int height, boolean addBorder, boolean rotate, Filter filter) {
+        BufferedImage backGround = createBackgroundImage(width, height, addBorder, rotate, filter);
 
         // add filter
         if (filter != null) {
             switch (filter) {
                 case GREY_SCALE:
-                    backGround = addGreyScaleFilter(backGround);
+                    backGround = addGrayScaleFilter(backGround);
                     break;
                 case BLACK_AND_WHITE:
                     backGround = addBlackAndWhiteFilter(backGround);
@@ -44,14 +62,17 @@ public class CollageBuilder {
             }
         }
 
-        BufferedImage textImage = new BufferedImage(
-                backGround.getWidth(),
-                backGround.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+
+        //BufferedImage textImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        BufferedImage textImage = new BufferedImage(backGround.getWidth(), backGround.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = textImage.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, textImage.getWidth(), textImage.getHeight());
+
         FontRenderContext frc = g.getFontRenderContext();
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, backGround.getWidth()/2);
-        GlyphVector gv = font.createGlyphVector(frc, "USC");
+        GlyphVector gv = font.createGlyphVector(frc, shapeKeyword);
         Rectangle2D box = gv.getVisualBounds();
         int xOff = 25 + (int)-box.getX();
         int yOff = 80 + (int)-box.getY();
@@ -60,46 +81,49 @@ public class CollageBuilder {
         g.drawImage(backGround,0,0,null);
         g.setClip(null);
         g.setStroke(new BasicStroke(0));
-//        g.setRenderingHint(
-//            RenderingHints.KEY_ANTIALIASING,
-//            RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(Color.BLACK);
+        g.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
         g.draw(shape);
         g.dispose();
+
 
         return textImage;
     }
 
-    private BufferedImage createBackgroundImage(int width, int height, boolean addBorder, Filter filter) {
+
+    protected BufferedImage createBackgroundImage(int width, int height, boolean addBorder, boolean rotate, Filter filter) {
         BufferedImage collageSpace = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
         Graphics2D g = collageSpace.createGraphics();
-        
+
         g.setColor(Color.white);
-        
-        
+
+
         int imageSize = width * height / 150;
-        
+
         double ratio = width/ height;
         int imageHeight = (int) Math.sqrt(imageSize / ratio);
         int imageWidth = imageHeight * (int) ratio;
-        
+
         BufferedImage backgroundImage = resize(images.get( (int) (Math.random() * 30)), width, height);
         g.drawImage(backgroundImage, 0, 0, null);
-        
+
         for (int i = 0; i < NUMBER_OF_ROW; i++) {
-            
+
             for (int j = 0; j < IMAGE_PER_ROW; j++) {
                 AffineTransform original = g.getTransform();
-                BufferedImage image = resize(images.get( (int) (Math.random() * 30)), imageWidth, imageHeight);
                 int xCoordinate = j * imageWidth;
                 int yCoordinate = i * imageHeight;
+                BufferedImage image = resize(images.get((int) (Math.random() * 30)), imageWidth, imageHeight);
                 if (addBorder) {
                     image = addBorder(image);
                 }
-                
-                System.out.println("drawing image " + i * j);
-                double angle = Math.random() * 90.0 - 45.0;
-                g.rotate(angle,xCoordinate,yCoordinate);
-                g.drawImage(image,xCoordinate,yCoordinate,null);
+                if (rotate) {
+                    double angle = Math.random() * 90.0 - 45.0;
+                    g.rotate(angle, xCoordinate, yCoordinate);
+                }
+                g.drawImage(image, xCoordinate, yCoordinate, null);
                 g.setTransform(original);
             }
         }
@@ -107,7 +131,7 @@ public class CollageBuilder {
     }
 
     // This method adds border to the image
-    private BufferedImage addBorder(BufferedImage image){
+    protected BufferedImage addBorder(BufferedImage image){
         //create a new image
         BufferedImage borderedImage = new BufferedImage(image.getWidth() + BORDER_PIXEL * 2,image.getHeight() + BORDER_PIXEL * 2,
                 BufferedImage.TYPE_INT_RGB);
@@ -121,7 +145,7 @@ public class CollageBuilder {
     }
 
     // This resize an image
-    private BufferedImage resize(BufferedImage img, int width, int height) {
+    protected BufferedImage resize(BufferedImage img, int width, int height) {
         Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -132,17 +156,7 @@ public class CollageBuilder {
         return image;
     }
 
-    // This method draws the first image and fill up the whole space
-    private void drawFirstImage(BufferedImage image, Graphics2D g, int collageWidth,
-                               int collageHeight){
-        AffineTransform original = g.getTransform();
-        image = resize(image, collageWidth, collageHeight);
-        image = addBorder(image);
-        g.drawImage(image,  collageWidth / 2 - image.getWidth() / 2,  collageHeight / 2 - image.getHeight() / 2, null);
-        g.setTransform(original);
-    }
-
-    private BufferedImage addBlackAndWhiteFilter(BufferedImage img)
+    protected BufferedImage addBlackAndWhiteFilter(BufferedImage img)
     {
         int w = img.getWidth();
         int h = img.getHeight();
@@ -164,7 +178,7 @@ public class CollageBuilder {
 
 
     // Add Grey filter
-    private BufferedImage addGreyScaleFilter(BufferedImage master) {
+    protected BufferedImage addGrayScaleFilter(BufferedImage master) {
         BufferedImage gray = new BufferedImage(master.getWidth(), master.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
@@ -174,7 +188,7 @@ public class CollageBuilder {
     }
 
 
-    private BufferedImage addSepiaFilter(BufferedImage img, int sepiaIntensity) {
+    protected BufferedImage addSepiaFilter(BufferedImage img, int sepiaIntensity) {
         BufferedImage sepia = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
         // Play around with this.  20 works well and was recommended
         //   by another developer. 0 produces black/white image
