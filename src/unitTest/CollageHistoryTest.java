@@ -39,7 +39,7 @@ public class CollageHistoryTest extends Mockito {
     	assertTrue(response != null);
     	
     	Map<String, String> collages = new HashMap<String, String>();
-    	collages = servlet.getCollages();
+    	collages = servlet.getCollages(); // returns a map of title and image file path
     	
     	// empty_user has no collage history, so should return 0 results
     	assertTrue(collages.size() == 10);
@@ -61,7 +61,7 @@ public class CollageHistoryTest extends Mockito {
     	assertTrue(response != null);
     	
     	Map<String, String> collages = new HashMap<String, String>();
-    	collages = servlet.getCollages();
+    	collages = servlet.getCollages(); // returns a map of title and image file path
     	
     	// empty_user has no collage history, so should return 0 results
     	assertTrue(collages.size() == 0);
@@ -83,7 +83,7 @@ public class CollageHistoryTest extends Mockito {
     	assertTrue(response != null);
     	
     	Map<String, String> collages = new HashMap<String, String>();
-    	collages = servlet.getCollages();
+    	collages = servlet.getCollages(); // returns a map of title and image file path
     	
     	// empty_user has no collage history, so should return 0 results
     	assertTrue(collages == null);
