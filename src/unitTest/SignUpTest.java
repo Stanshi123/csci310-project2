@@ -15,10 +15,10 @@ import servlets.SignUpServlet;
 public class SignUpTest extends Mockito {
 	
 	private SignUpServlet servlet;
-	private static final String NEW_USERNAME = "newAccount";
-	private static final String NEW_PASSWORD = "newAccount";
-	private static final String EXISTING_USERNAME = "william";
-	private static final String EXISTING_PASSWORD = "william";
+	private static final String NEW_USERNAME = "new_user";
+	private static final String NEW_PASSWORD = "new_user";
+	private static final String EXISTING_USERNAME = "test_user";
+	private static final String EXISTING_PASSWORD = "test_user";
 	private static final String EMPTY_STRING = "";
     
     @Test

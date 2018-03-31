@@ -1,3 +1,4 @@
+
 package whiteboxtests;
 
 import static org.junit.Assert.assertTrue;
@@ -15,8 +16,8 @@ import servlets.LoginServlet;
 public class LoginTest extends Mockito {
 	
 	private LoginServlet servlet;
-	private static final String USERNAME = "william";
-	private static final String PASSWORD = "william";
+	private static final String USERNAME = "test_user";
+	private static final String PASSWORD = "test_user";
 	private static final String WRONG_PASSWORD = "wrong";
 	private static final String EMPTY_STRING = "";
     
