@@ -62,20 +62,16 @@ public class CollageBuilder {
             }
         }
 
-
-        //BufferedImage textImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
         BufferedImage textImage = new BufferedImage(backGround.getWidth(), backGround.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = textImage.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, textImage.getWidth(), textImage.getHeight());
-
         FontRenderContext frc = g.getFontRenderContext();
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, backGround.getWidth()/2);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)backGround.getWidth() * 1.5)/(shapeKeyword.length()));
         GlyphVector gv = font.createGlyphVector(frc, shapeKeyword);
         Rectangle2D box = gv.getVisualBounds();
-        int xOff = 25 + (int)-box.getX();
-        int yOff = 80 + (int)-box.getY();
+        int xOff = (width - (int)box.getWidth()) / 2 - (int)box.getX();
+        int yOff = (height - (int)box.getHeight()) / 2 - (int)box.getY();
         Shape shape = gv.getOutline(xOff,yOff);
         g.setClip(shape);
         g.drawImage(backGround,0,0,null);
@@ -99,7 +95,6 @@ public class CollageBuilder {
 
         g.setColor(Color.white);
 
-
         int imageSize = width * height / 150;
 
         double ratio = width/ height;
@@ -120,7 +115,7 @@ public class CollageBuilder {
                     image = addBorder(image);
                 }
                 if (rotate) {
-                    double angle = Math.random() * 90.0 - 45.0;
+                	    double angle = Math.random() * 90.0 - 45.0;
                     g.rotate(angle, xCoordinate, yCoordinate);
                 }
                 g.drawImage(image, xCoordinate, yCoordinate, null);
