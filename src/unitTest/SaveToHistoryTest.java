@@ -26,7 +26,7 @@ public class SaveToHistoryTest extends Mockito {
     
     @Test
     // collage history size of insert_test_user should increase by 1 after SQL query
-   public void testSaveToHistory () throws Exception {
+    public void testSaveToHistory () throws Exception {
     	HttpServletRequest request = mock(HttpServletRequest.class);
     	HttpServletResponse response = mock(HttpServletResponse.class);
     	
@@ -50,12 +50,13 @@ public class SaveToHistoryTest extends Mockito {
     	
     	assertTrue(response != null);
     	
-    	collages = saveServlet.getCollages();
+    	historyServlet.doGet(request, response);
+    	collages = historyServlet.getCollages();
     	newSize = collages.size(); // size of collage history after inserting
     	
     	assertTrue(newSize == currentSize+1); // size should change after inserting a new collage
     	
-    	saveServlet.deleteAfterTest(); // delete inserted dummy collage
+    	historyServlet.deleteAfterTest(); // delete inserted dummy collage
     }
     
 }

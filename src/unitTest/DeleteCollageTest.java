@@ -46,8 +46,10 @@ public class DeleteCollageTest extends Mockito {
     	
     	assertTrue(response != null);
     	
+    	historyServlet = new CollageHistoryServlet();
+    	historyServlet.doGet(request, response);
     	Map<String, String> collages = new HashMap<String, String>();
-    	collages = saveServlet.getCollages();
+    	collages = historyServlet.getCollages();
     	currentSize = collages.size(); // size of collage history before deleting
 
     	// now use deleteServlet to delete the dummy collage
@@ -57,7 +59,8 @@ public class DeleteCollageTest extends Mockito {
     	
     	assertTrue(response != null);
     	
-    	collages = deleteServlet.getCollages();
+    	historyServlet.doGet(request, response);
+    	collages = historyServlet.getCollages();
     	newSize = collages.size(); // size of collage history after deleting
     	
     	assertTrue(newSize+1 == currentSize); // size should change after deleting a new collage
@@ -91,7 +94,8 @@ public class DeleteCollageTest extends Mockito {
     	
     	assertTrue(response != null);
     	
-    	collages = deleteServlet.getCollages();
+    	historyServlet.doGet(request,  response);
+    	collages = historyServlet.getCollages();
     	newSize = collages.size(); // size of collage history after deleting
     	
     	assertTrue(newSize == currentSize); // size should not change after deleting a non-existant collage
