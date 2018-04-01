@@ -22,6 +22,7 @@ public class DeleteCollageTest extends Mockito {
 	private SaveToHistoryServlet saveServlet;
 	private DeleteCollageServlet deleteServlet;
 	private static final String DELETE_TEST_USER_ID = "12";
+	private static final String IMAGE_SOURCE = "";
     
     @Test
     // collage history size of insert_test_user should increase by 1 after SQL query
@@ -32,6 +33,7 @@ public class DeleteCollageTest extends Mockito {
     	int currentSize, newSize;
     	
     	when (request.getParameter("user_id")).thenReturn(DELETE_TEST_USER_ID);
+    	when (request.getParameter("img_src")).thenReturn(IMAGE_SOURCE);
     	when (request.getSession()).thenReturn(mock(HttpSession.class));
     	
     	// use saveServlet to insert dummy collage
