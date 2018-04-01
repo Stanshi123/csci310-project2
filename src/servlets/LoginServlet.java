@@ -88,7 +88,7 @@ public class LoginServlet extends HttpServlet {
 					res = "success";
 				
 			} catch (SQLException sqle) {
-				System.out.println ("SQLException asdf: " + sqle.getMessage());
+				System.out.println ("SQLException: " + sqle.getMessage());
 			} catch (ClassNotFoundException cnfe) {
 				System.out.println ("ClassNotFoundException: " + cnfe.getMessage());
 			} finally {
