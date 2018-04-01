@@ -9,9 +9,6 @@
 	import="data.Constants"
 	import="java.awt.image.BufferedImage"
 %>
-<%
-	boolean clicked = false;
-%>
 
 <!doctype html>
 <html class="no-js" lang="" >
@@ -24,8 +21,8 @@
 		<link rel="manifest" href="site.webmanifest" >
 
 		<%-- CSS --%>
-		<link rel="stylesheet" href="css/main.css" >
 		<link rel="stylesheet" href="css/mainpage.css" >
+		<!-- <link rel="stylesheet" href="css/mainpage.css" > -->
 
 		<%-- JavaScript --%>
 		<script src="js/buildcollage.js" type="text/javascript"></script>
@@ -57,7 +54,7 @@
 					<div
 						id="collage-area"
 						class="collage"
-						style="width: 50%; margin-left:auto; margin-right:auto;" 
+						style="width: 800; height:600; margin-left:auto; margin-right:auto;" 
 					>
 					
 						<%
@@ -87,8 +84,9 @@
 				
 				
 				
-				<div id="collage-option-container" style=" margin-left: 30%;  text-align: left; "  >
+				<div id="collage-option-container" style="width:50%; margin-left:auto; margin-right:auto; text-align: left; padding:50px;"  >
 					<div id= "dimension-input">
+						<div class="option-line" id="collage-width" style="float:left;width:50%;">
 						Collage Width:
 						<input
 							id="collage-width-input"
@@ -97,7 +95,8 @@
 							placeholder = "Enter collage width"
 							value = "800"
 						>
-						&nbsp;
+						</div>
+						<div class="option-line" id="collage-height" align="right" style="float:right;width:50%;">
 						Collage Height:
 						<input
 							id="collage-height-input"
@@ -106,9 +105,11 @@
 							placeholder = "Enter collage height"
 							value = "600"
 						>
+						</div>
+					</div>
 						
 						<br>
-						<div id = "filter-input">
+						<div class="option-line" id = "filter-input">
 							Filter Options:
 							&nbsp;
 							<input
@@ -145,7 +146,7 @@
 						</div>
 						
 						
-						<div id = "rotation-input">
+						<div class="option-line" id = "rotation-input">
 						Rotation Options:
 							<input
 								id = "on-rotation"
@@ -165,7 +166,7 @@
 						</div>
 						
 						
-						<div id = "border-input">
+						<div class="option-line" id = "border-input">
 						Border Options:
 							<input
 								id = "on-border"
@@ -183,8 +184,16 @@
 							>
 								Off
 						</div>
-						
-						<div id="shape-input-container">
+						<div class="option-line" id="search-bar-container" style="float:left; width:50%;">
+						Collage Topic:
+						<input
+							id="search-bar-input"
+							class ="input-box"
+							type="text"
+							placeholder="Enter topic"
+						/>
+					    </div>
+						<div class="option-line" id="shape-input-container" align="right" style="float:right; width:50%;">
 						Collage Shape:
 						<input 
 							id ="shape-input" 
@@ -192,38 +201,25 @@
 							class ="input-box"
 							placeholder="Enter shape"
 						>
-					</div>
-				</div>
-
+						</div>
 				<%-- #search-container holds search text bar,
 				"Build Collage" button, and "Export Collage" button --%>
-				<div id="search-container">
-					<div id="search-bar-container">
-						<input
-							id="search-bar-input"
-							class ="input-box"
-							type="text"
-							placeholder="Enter topic"
-						/>
-						<br>
-						<br>
-						<button
+				<div class="option-line" id="search-button-container" style="padding-top:50px;padding-bottom:50px;">
+						<button style="float:left; width:50%;"
 							id="search-bar-submit"
 							class="search-bar-button"
 							type="submit"
 							onclick="checkForText()"
 						>Build Collage</button>
-						<button
+						<button style="float:right; width:50%;"
 							id="search-bar-export"
 							class="search-bar-button"
 							type="submit"
 							onclick="exportCollage()"
 						>Export Collage</button> 
 					</div>
-				</div>
 			</div>
-
-		
+		</div>
 		</div>
 		
 		<%-- JavaScript --%>
