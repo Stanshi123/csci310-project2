@@ -20,7 +20,7 @@ import java.util.HashMap;
 /**
  * Servlet implementation class SaveToHistoryServlet
  */
-@WebServlet("/SaveToHistoryServlet")
+@WebServlet("/DeleteCollageServlet")
 public class DeleteCollageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Map<String, String> collages = null;
