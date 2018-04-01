@@ -6,183 +6,86 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import Server.CollageBuilder;
 
-public class CollageBuilderTest {
+public class CollageBuilderTest extends CollageBuilder {
 
+	@Before
+	public void initialize() {
+		List<BufferedImage> images = new ArrayList<>();
+		for(int i=0; i<30; i++)
+		{
+			URL imageURL = null;
+			try {
+				imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
+			}catch(MalformedURLException e) {
+			}
+
+			try{
+				BufferedImage image = ImageIO.read(imageURL);
+				images.add(image);
+			}catch(IOException e){
+			}
+		}
+
+		this.images = images;
+	}
 	@Test
 	public void testCreateCollageWithImages() {
-		List<BufferedImage> images = new ArrayList<>();
-		for(int i=0; i<30; i++)
-		{
-			URL imageURL = null;
-			try {
-				imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-			}catch(MalformedURLException e) {
-			}
-			
-			try{
-				BufferedImage image = ImageIO.read(imageURL);
-				images.add(image);
-			}catch(IOException e){
-			}	
-		}
-		
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage collageBuilt = cb.createCollageWithImages(800, 600, true, null);
-		assertTrue("The Collage built is an instatnce of image.", collageBuilt instanceof BufferedImage);
+		BufferedImage collageBuilt = createCollageWithImages(800, 600, true, false, null);
+		assertTrue("The Collage built is an instance of image.", collageBuilt instanceof BufferedImage);
 	}
 
+
+    @Test
 	public void testCreateBackGroundImage() {
-		List<BufferedImage> images = new ArrayList<>();
-		for(int i=0; i<30; i++)
-		{
-			URL imageURL = null;
-			try {
-				imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-			}catch(MalformedURLException e) {
-			}
-			
-			try{
-				BufferedImage image = ImageIO.read(imageURL);
-				images.add(image);
-			}catch(IOException e){
-			}	
-		}
-		
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage backgroundImage = cb.createBackGroundImage(800, 600, true, null);
-		assertTrue("The background image created is an instatnce of image.", backgroundImage instanceof BufferedImage);
+		BufferedImage backgroundImage = createBackgroundImage (800, 600, true, false, null);
+		assertTrue("The background image created is an instance of image.", backgroundImage instanceof BufferedImage);
 	}
 
+	@Test
 	public void testCreateRotatedBackGroundImage() {
-		List<BufferedImage> images = new ArrayList<>();
-		for(int i=0; i<30; i++)
-		{
-			URL imageURL = null;
-			try {
-				imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-			}catch(MalformedURLException e) {
-			}
-			
-			try{
-				BufferedImage image = ImageIO.read(imageURL);
-				images.add(image);
-			}catch(IOException e){
-			}	
-		}
-		
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage rotatedBackgroundImage = cb.createRotatedBackGroundImage(800, 600, true, null);
-		assertTrue("The rotated background image created is an instatnce of image.", rotatedBackgroundImage instanceof BufferedImage);
+		BufferedImage rotatedBackgroundImage = createBackgroundImage(800, 600, true, true, null);
+		assertTrue("The rotated background image created is an instance of image.", rotatedBackgroundImage instanceof BufferedImage);
 	}
 
+	@Test
 	public void testAddBorder() {
-		List<BufferedImage> images = new ArrayList<>();
-		URL imageURL = null;
-		try {
-			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-		}catch(MalformedURLException e) {
-		}
-			
-		try{
-			BufferedImage image = ImageIO.read(imageURL);
-			images.add(image);
-		}catch(IOException e){
-		}	
-		
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage imageWithBorder = cb.addBorder(images[0]);
-		assertTrue("The image with border is an instatnce of image.", imageWithBorder instanceof BufferedImage);
+		BufferedImage imageWithBorder = addBorder(images.get(0));
+		assertTrue("The image with border is an instance of image.", imageWithBorder instanceof BufferedImage);
+
 	}
 
+	@Test
 	public void testResize() {
-		List<BufferedImage> images = new ArrayList<>();
-		URL imageURL = null;
-		try {
-			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-		}catch(MalformedURLException e) {
-		}
-			
-		try{
-			BufferedImage image = ImageIO.read(imageURL);
-			images.add(image);
-		}catch(IOException e){
-		}	
-		
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage imageResized = cb.resize(images[0], 100, 100);
-		assertTrue("The image resized is an instatnce of image.", imageResized instanceof BufferedImage);
-		//Check width and height here
+		BufferedImage imageResized = resize(images.get(0), 100, 100);
+		assertTrue("The image resized is an instance of image.", imageResized instanceof BufferedImage);
 	}
 
+	@Test
 	public void testAddBlackAndWhiteFilter(){
-		List<BufferedImage> images = new ArrayList<>();
-		URL imageURL = null;
-		try {
-			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-		}catch(MalformedURLException e) {
-		}
-			
-		try{
-			BufferedImage image = ImageIO.read(imageURL);
-			images.add(image);
-		}catch(IOException e){
-		}
-
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage imageWithBlackAndWhiteFilter = cb.addBlackAndWhiteFilter(images[0]);
-		assertTrue("The image with black and white filter is an instatnce of image.", imageWithBlackAndWhiteFilter instanceof BufferedImage);	
-
+		BufferedImage imageWithBlackAndWhiteFilter = addBlackAndWhiteFilter(images.get(0));
+		assertTrue("The image with black and white filter is an instance of image.", imageWithBlackAndWhiteFilter instanceof BufferedImage);
 	}
 
+	@Test
 	public void testAddGrayScaleFilter(){
-		List<BufferedImage> images = new ArrayList<>();
-		URL imageURL = null;
-		try {
-			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-		}catch(MalformedURLException e) {
-		}
-			
-		try{
-			BufferedImage image = ImageIO.read(imageURL);
-			images.add(image);
-		}catch(IOException e){
-		}
-
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage imageWithGrayScaleFilter = cb.addGrayScaleFilter(images[0]);
-		assertTrue("The image with gray scale filter is an instatnce of image.", imageWithGrayScaleFilter instanceof BufferedImage);	
-
+		BufferedImage imageWithGrayScaleFilter = addGrayScaleFilter(images.get(0));
+		assertTrue("The image with gray scale filter is an instance of image.", imageWithGrayScaleFilter instanceof BufferedImage);
 	}
 
+	@Test
 	public void testAddSepiaFilter(){
-		List<BufferedImage> images = new ArrayList<>();
-		URL imageURL = null;
-		try {
-			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
-		}catch(MalformedURLException e) {
-		}
-			
-		try{
-			BufferedImage image = ImageIO.read(imageURL);
-			images.add(image);
-		}catch(IOException e){
-		}
-
-		CollageBuilder cb = new CollageBuilder(images);
-		BufferedImage imageWithSepiaFilter = cb.addSepiaFilter(images[0]);
-		assertTrue("The image with sepia filter is an instatnce of image.", imageWithSepiaFilter instanceof BufferedImage);	
-
+		BufferedImage imageWithSepiaFilter = addSepiaFilter(images.get(0), 1);
+		assertTrue("The image with sepia filter is an instance of image.", imageWithSepiaFilter instanceof BufferedImage);
 	}
-
-
-
 }
