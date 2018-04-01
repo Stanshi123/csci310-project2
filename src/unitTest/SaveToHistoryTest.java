@@ -22,6 +22,7 @@ public class SaveToHistoryTest extends Mockito {
 	private SaveToHistoryServlet saveServlet;
 	private CollageHistoryServlet historyServlet;
 	private static final String INSERT_TEST_USER_ID = "11";
+	private static final String IMAGE_SOURCE = "";
     
     @Test
     // collage history size of insert_test_user should increase by 1 after SQL query
@@ -32,6 +33,7 @@ public class SaveToHistoryTest extends Mockito {
     	int currentSize, newSize;
     	
     	when (request.getParameter("user_id")).thenReturn(INSERT_TEST_USER_ID);
+    	when (request.getParameter("img_src")).thenReturn(IMAGE_SOURCE);
     	when (request.getSession()).thenReturn(mock(HttpSession.class));
     	
     	historyServlet = new CollageHistoryServlet();
