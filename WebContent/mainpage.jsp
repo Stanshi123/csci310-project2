@@ -3,6 +3,12 @@
 	contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 %>
+<%@page
+	import="data.Result"
+	import="java.util.*"
+	import="data.Constants"
+	import="java.awt.image.BufferedImage"
+%>
 
 <!doctype html>
 <html class="no-js" lang="" >
@@ -30,7 +36,15 @@
 						id="collage-caption"
 						class="display-collage centered-width"
 					>
-						Collage for topic X
+							<%
+							Result currentResult = (Result) session.getAttribute(Constants.SESSION_CURRENT_RESULT);
+							String caption = "";	// if currentResult is failure, no caption
+							if (currentResult.isSuccess()) {
+								// if currentResult is success, set to "Collage for [keyword]"
+								caption = "Collage for topic " + currentResult.getKeyword();
+							}
+						%>
+						<%=caption%>
 					</div>
 
 					<%-- #collage-area holds a collage image or a error message --%>
@@ -39,9 +53,9 @@
 						class="collage"
 						style="width: 800px; height: 600px;" 
 					>
-					<img class="galleryImage"  src="https://files.slack.com/files-pri/T9SH3RP6H-F9YNE9H61/usc-text.png" alt="Swans">
+					<!-- <img class="galleryImage"  src="https://files.slack.com/files-pri/T9SH3RP6H-F9YNE9H61/usc-text.png" alt="Swans"> -->
 					
-<%-- 						<%
+						<%
 							if (currentResult.isSuccess()) {
 								// if currentResult is success, get image from BufferedImage
 								// and display in <img>
@@ -58,31 +72,36 @@
 								out.print("<div id=\"collage-placeholder\" class=\"collage-area centered-width\">"
 										+ "<div class=\"error-message\">" + currentResult.getErrorMessage() + "</div></div>");
 							}
-						%> --%>
+						%>
 					</div>
 				</div>
 				
 				
 				
-				<div id="collage-option-container">
-					<div id= "shape-input">
+				<div id="collage-option-container" style=" margin-left: 30%;  text-align: left; "  >
+					<div id= "dimension-input">
+						Collage Width:
 						<input
 							id="collage-width-input"
 							type = "text"
 							class ="input-box"
 							placeholder = "Enter collage width"
+							value = "800"
 						>
-						
+						&nbsp;
+						Collage Height:
 						<input
 							id="collage-height-input"
 							type = "text"
 							class ="input-box"
 							placeholder = "Enter collage height"
+							value = "600"
 						>
 						
 						<br>
 						<div id = "filter-input">
 							Filter Options:
+							&nbsp;
 							<input
 								id = "no-filter"
 								type ="radio"
@@ -156,6 +175,14 @@
 								Off
 						</div>
 						
+						<div id="shape-input-container">
+						Collage Shape:
+						<input 
+							id ="shape-input" 
+							type="text"
+							class ="input-box"
+							placeholder="Enter shape"
+						>
 					</div>
 				</div>
 
@@ -165,9 +192,12 @@
 					<div id="search-bar-container">
 						<input
 							id="search-bar-input"
+							class ="input-box"
 							type="text"
 							placeholder="Enter topic"
 						/>
+						<br>
+						<br>
 						<button
 							id="search-bar-submit"
 							class="search-bar-button"

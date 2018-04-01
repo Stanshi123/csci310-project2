@@ -39,9 +39,20 @@ public class ServletEngine extends HttpServlet {
 		
 		/* Check if request is for keyword */
 		// get keyword parameter from HttpServletRequest
-		String keyword = getKeywordFromRequest(request);	
+		String keyword = request.getParameter(Constants.KEYWORD_PARAMETER);
+		String shape = request.getParameter(Constants.SHAPE_PARAMETER);
+		String widthString = request.getParameter(Constants.WIDTH_PARAMETER);
+		int width = Integer.parseInt(widthString);
+		String heightString =request.getParameter(Constants.HEIGHT_PARAMETER);
+		int height = Integer.parseInt(heightString);
+		String filterString = request.getParameter(Constants.FILTER_PARAMETER);
+		String rotationString = request.getParameter(Constants.ROTATION_PARAMETER);
+		boolean rotation = (rotationString == "On");
+		String borderString = request.getParameter(Constants.BORDER_PARAMETER);
+		boolean border = (borderString == "On");
+	
 		if (keyword != null) {
-			Result result = sendKeywordToServer(keyword); 
+			Result result = sendKeywordToServer(keyword, shape, width, height, filterString, rotation, border); 
 			setSessionAttributes(request, result);
 			Timestamp finishTime = new Timestamp(System.currentTimeMillis());
 			System.out.println("Request Finished " + finishTime);
@@ -70,18 +81,65 @@ public class ServletEngine extends HttpServlet {
 	 * Private Functions
 	 */
 	// Returns value for KEYWORD_PARAMETER in HttpServletRequest
-	private String getKeywordFromRequest(HttpServletRequest request) {
-		return request.getParameter(Constants.KEYWORD_PARAMETER);
-	}
-	
+//	private String getKeywordFromRequest(HttpServletRequest request) {
+//		return request.getParameter(Constants.KEYWORD_PARAMETER);
+//	}
+//	
+//	private String getShapeFromRequest(HttpServletRequest request) {
+//		return request.getParameter(Constants.SHAPE_PARAMETER);
+//	}
+//	
+//	private int getWidthFromRequest(HttpServletRequest request) {
+//		String widthString =request.getParameter(Constants.WIDTH_PARAMETER);
+//		System.out.println(widthString);
+//		int width = Integer.parseInt(widthString);
+//		return width;
+//	}
+//	
+//	private int getHeightFromRequest(HttpServletRequest request) {
+//		String heightString =request.getParameter(Constants.HEIGHT_PARAMETER);
+//		int height = Integer.parseInt(heightString);
+//		return height;
+//	}
+//	
+//	private String getFilterFromRequest(HttpServletRequest request) {
+//		return request.getParameter(Constants.FILTER_PARAMETER);
+//	}
+//	
+//	private boolean getRotationFromRequest(HttpServletRequest request) {
+//		String rotationString = request.getParameter(Constants.ROTATION_PARAMETER);
+//		if(rotationString=="On")
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//		
+//		
+//	}
+//	
+//	private boolean getBorderFromRequest(HttpServletRequest request) {
+//		String borderString = request.getParameter(Constants.BORDER_PARAMETER);
+//		if(borderString=="On")
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//	}
 	// Returns value for SAVED_COLLAGE_ID_PARAMETER in HttpServletRequest
 	private String getSavedCollageIDFromRequest(HttpServletRequest request) {
 		return request.getParameter(Constants.SAVED_COLLAGE_ID_PARAMETER);
 	}
 	
 	// Sends keyword to Server and returns the Result received from Server
-	private Result sendKeywordToServer(String keyword) {
-		Result result = Server.getInstance().getResultForKeyword(keyword);
+	private Result sendKeywordToServer(String keyword,String shape, int width, int height, String filterString,
+			boolean rotation, boolean border) {
+		Result result = Server.getInstance().getResultForKeyword(keyword, shape, width, height, filterString, rotation, border);
 		return result;
 	}
 	
