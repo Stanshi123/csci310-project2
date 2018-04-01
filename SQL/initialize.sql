@@ -31,6 +31,12 @@ INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (3, 'gav
 INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (4, 'ivy', 'ivy');
 INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (5, 'stan', 'stan');
 INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (6, 'william', 'william');
+INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (7, 'a', 'a');
+INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (8, 'new', 'new');
+INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (9, 'test_user', 'test_user');
+INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (10, 'empty_user', 'empty_user');
+INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (11, 'insert_test_user', 'insert_test_user');
+INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (12, 'delete_test_user', 'delete_test_user');
 
 -- saved collage table data
 INSERT INTO `scrumdb`.`saved_collage` (`saved_collage_id`, `collage_name`, `collage_path`, `user_id`) VALUES (1, 'test', 'path', 1);
