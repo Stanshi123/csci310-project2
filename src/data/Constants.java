@@ -11,6 +11,15 @@ import data.ResultType.ResultType;
 
 public class Constants {
 	public static final String KEYWORD_PARAMETER = "keyword";
+	public static final String SHAPE_PARAMETER = "shape";
+	public static final String WIDTH_PARAMETER = "width";
+	public static final String HEIGHT_PARAMETER = "height";
+	public static final String FILTER_PARAMETER = "filter";
+	public static final String ROTATION_PARAMETER = "rotation";
+	public static final String BORDER_PARAMETER = "border";
+	
+	
+	
 	public static final String SAVED_COLLAGE_ID_PARAMETER = "sc-id";
 	public static final String ERROR_MESSAGE = "Insufficient number of images found";
 	
