@@ -9,6 +9,9 @@
 	import="data.Constants"
 	import="java.awt.image.BufferedImage"
 %>
+<%
+	boolean clicked = false;
+%>
 
 <!doctype html>
 <html class="no-js" lang="" >
@@ -37,13 +40,16 @@
 						class="display-collage centered-width"
 					>
 							<%
+							String caption = "";
 							Result currentResult = (Result) session.getAttribute(Constants.SESSION_CURRENT_RESULT);
-							String caption = "";	// if currentResult is failure, no caption
-							if (currentResult.isSuccess()) {
-								// if currentResult is success, set to "Collage for [keyword]"
-								caption = "Collage for topic " + currentResult.getKeyword();
+							if(currentResult != null){
+								// if currentResult is failure, no caption
+								if (currentResult.isSuccess()) {
+									// if currentResult is success, set to "Collage for [keyword]"
+									caption = "Collage for topic " + currentResult.getKeyword();
+								}	
 							}
-						%>
+							%>
 						<%=caption%>
 					</div>
 
@@ -51,28 +57,31 @@
 					<div
 						id="collage-area"
 						class="collage"
-						style="width: 800px; height: 600px;" 
+						style="width: 50%; margin-left:auto; margin-right:auto;" 
 					>
-					<!-- <img class="galleryImage"  src="https://files.slack.com/files-pri/T9SH3RP6H-F9YNE9H61/usc-text.png" alt="Swans"> -->
 					
 						<%
-							if (currentResult.isSuccess()) {
-								// if currentResult is success, get image from BufferedImage
-								// and display in <img>
-								BufferedImage bImage = currentResult.getCollageImage();
-								out.print("<img id=\"collage\""
-								+ "src=\"data:image/jpg;base64, "
-								+ Constants.getImage(bImage)
-								+ "\" alt=\"img not found\""
-								+ "name=\"" + currentResult.getKeyword() + "\""
-								+ "class=\"display-collage collage-area\" />");
-							} else {
-								// if currentResult is error, get error message
-								// and display in <div>
-								out.print("<div id=\"collage-placeholder\" class=\"collage-area centered-width\">"
-										+ "<div class=\"error-message\">" + currentResult.getErrorMessage() + "</div></div>");
+							if(currentResult != null){
+								if (currentResult.isSuccess()) {
+									// if currentResult is success, get image from BufferedImage
+									// and display in <img>
+									BufferedImage bImage = currentResult.getCollageImage();
+									out.print("<img id=\"collage\""
+									+ "src=\"data:image/jpg;base64, "
+									+ Constants.getImage(bImage)
+									+ "\" alt=\"img not found\""
+									+ "name=\"" + currentResult.getKeyword() + "\""
+									+ "class=\"display-collage collage-area\" />");
+								} else {
+									// if currentResult is error, get error message
+									// and display in <div>
+									out.print("<div id=\"collage-placeholder\" class=\"collage-area centered-width\">"
+											+ "<div class=\"error-message\">" + currentResult.getErrorMessage() + "</div></div>");
+								}
 							}
+							
 						%>
+						
 					</div>
 				</div>
 				
