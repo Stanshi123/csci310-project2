@@ -47,11 +47,11 @@ public class ServletEngine extends HttpServlet {
 		int height = Integer.parseInt(heightString);
 		String filterString = request.getParameter(Constants.FILTER_PARAMETER);
 		String rotationString = request.getParameter(Constants.ROTATION_PARAMETER);
-		boolean rotation = (rotationString == "On");
+		boolean rotation = (rotationString.equals("On"));
 		String borderString = request.getParameter(Constants.BORDER_PARAMETER);
-		boolean border = (borderString == "On");
-	
-		if (keyword != null) {
+		boolean border = (borderString.equals("On"));
+		
+		if (keyword != null && shape != null) {
 			Result result = sendKeywordToServer(keyword, shape, width, height, filterString, rotation, border); 
 			setSessionAttributes(request, result);
 			Timestamp finishTime = new Timestamp(System.currentTimeMillis());
