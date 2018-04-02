@@ -7,7 +7,6 @@ Background:
 
   Scenario: Requirements on topic input box
 	Then there is a topic input box
-	Then placeholder text of input box is "Enter topics"
 
   Scenario: Requirements on collage dimension input box
 	Then there is a collage width pixel input
@@ -29,6 +28,9 @@ Background:
 
   Scenario: Requirements on save to history button
 	Then there is a save to history button
+
+  Scenario: Requirements on view history button
+	Then there is a view history button
 
   Scenario: Requirements on export collage button. 
 	Then there is an export collage button
