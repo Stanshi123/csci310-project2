@@ -65,23 +65,31 @@ public class LoginServlet extends HttpServlet {
 			try {
 				// establish connection
 				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=root&useSSL=false");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=S(5mIguLQg&useSSL=false");
 				
 				statement = conn.createStatement(); // SQL statement
 				
 				// check if user provides correct login credentials
-				query
-					= "SELECT "
-						+ "COUNT(*) AS count, "
-						+ "user_id "
-					+ "FROM user "
-					+ "WHERE username = '" + username + "' "
-						+ "AND password = '" + password + "';";
+				query = "SELECT "
+						+ "COUNT(*) AS count "
+						+ "FROM user "
+							+ "WHERE username = '" + username + "' "
+								+ "AND password = '" + password + "';";
+
 				resultSet = statement.executeQuery(query);
 				while (resultSet.next()) {
 					count = resultSet.getInt("count");
-					user_id = resultSet.getInt("user_id");
 				}
+
+				query = "SELECT "
+						+ "user_id "
+						+ "FROM user "
+						+ "WHERE username = '" + username + "' "
+						+ "AND password = '" + password + "';";
+
+				resultSet = statement.executeQuery(query);
+				while (resultSet.next())
+					user_id = resultSet.getInt("user_id");
 	
 				// if count returns 1, then the username/password combination matches the database
 				if (count == 1)

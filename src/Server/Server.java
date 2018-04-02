@@ -44,6 +44,7 @@ public class Server {
 		}
 	
 	//checkIfResultExistsForKeyword
+	/*
 	private boolean checkIfResultExistsForKeyword(String keyword) {
 		if (savedResults.containsKey(keyword)) {
 			return true;
@@ -54,6 +55,7 @@ public class Server {
 	private Result retrieveResultForKeyword(String keyword) {
 		return savedResults.get(keyword);
 	}
+	*/
 	
 	//createResultForResponse
 	private Result createResultForResponse(String keyword,String shape, int width, int height, String filterString,
@@ -94,7 +96,7 @@ public class Server {
 		if (images.size() == 30) {
 			suff = true;
 		}
-		if (suff == true) {
+		if (suff) {
 		//send to collage builder
 			CollageBuilder cb = new CollageBuilder(images,shape);
 			BufferedImage resultImage = cb.createCollageWithImages(width, height, border, rotation, filter);

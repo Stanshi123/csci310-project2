@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 
 public class APICommunicator {
 	// This is the keyword that we are searching for.
-    private String keyword;
+    private String keyword = "Default";
 
     // Static constants
     private static final int IMAGE_NUMBER = 30;
@@ -25,7 +25,7 @@ public class APICommunicator {
     private static final int THREAD_NUMBER = 40;
     private static final int SLEEP_TIME = 1000;
     private static final int ELEMENT_PER_REQUEST = 10;
-    private static final int SLEEP_TIME_OUT = 1;
+    private static final int SLEEP_TIME_OUT = 20;
     // The constants below are for the request
     private static final String URL_REQUEST_PROPERTY_KEY = "User-Agent";
     private static final String URL_REQUEST_PROPERTY_VALUE = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) " +

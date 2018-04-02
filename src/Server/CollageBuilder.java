@@ -9,8 +9,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;

@@ -86,6 +86,7 @@ public class APICommunicatorTest extends APICommunicator{
 	@Test
 	public void testRequestForKeyWord() {
 		sendRequestForKeyWord(1);
+		assertFalse(urls.isEmpty());
 	}
 
 	@Test

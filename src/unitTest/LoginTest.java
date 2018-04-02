@@ -1,5 +1,5 @@
 
-package whiteboxtests;
+package unitTest;
 
 import static org.junit.Assert.assertTrue;
 

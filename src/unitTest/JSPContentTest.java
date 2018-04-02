@@ -25,7 +25,7 @@ public class JSPContentTest extends Mockito {
 	private BufferedImage mockUpImage;
 	
 	@Before
-	public void initilalize() {
+	public void initialize() {
 		URL imageURL = null;
 		try {
 			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");

@@ -37,8 +37,5 @@ public class Result {
 	public boolean isSuccess() {
 		return resultType == ResultType.success;
 	}
-	
-	public boolean isFailure() {
-		return resultType == ResultType.failure;
-	}
+
 }

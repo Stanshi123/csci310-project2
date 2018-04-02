@@ -1,4 +1,4 @@
-package whiteboxtests;
+package unitTest;
 
 import static org.junit.Assert.assertTrue;
 
@@ -44,7 +44,7 @@ public class SignUpTest extends Mockito {
     
     @Test
     // User should not be able to sign up if the user provides a username that already exists
-    public void testLoginFail() throws Exception {
+    public void testSignUpFail() throws Exception {
     	HttpServletRequest request = mock(HttpServletRequest.class);
     	HttpServletResponse response = mock(HttpServletResponse.class);
     	
