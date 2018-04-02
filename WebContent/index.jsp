@@ -43,7 +43,7 @@
 					class="login-page-button"
 				>Login</button>
 				<button
-					id="singup-button"
+					id="signup-button"
 					class="login-page-button"
 				>Sign Up</button> 
 			</div> 
