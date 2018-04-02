@@ -217,13 +217,23 @@
 							type="submit"
 							onclick="exportCollage()"
 						>Export Collage</button> 
-					</div>
+						<button style="float:left; width:50%;"
+							id="search-bar-save-history"
+							class="search-bar-button"
+							type="submit"
+						>Save to History</button>
+						<button style="float:right; width:50%;"
+							id="search-bar-view-history"
+							class="search-bar-button"
+							type="submit"
+						>View History</button> 
+				</div>
+			
 			</div>
 		</div>
 		</div>
 		
 		<%-- JavaScript --%>
-		<script src="js/main.js"></script>
 	    <script>
 				// Implements "Press Enter to trigger 'Build Collage' button functionality"
 	    	document.querySelector("#search-bar-input").addEventListener("keyup", event => {
