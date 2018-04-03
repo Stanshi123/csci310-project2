@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `scrumdb`.`saved_collage` (
   INDEX `fk_saved_collage_user_idx` (`user_id` ASC),
   CONSTRAINT `fk_saved_collage_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `scrumdb`.`user` (`user_id`);
+    REFERENCES `scrumdb`.`user` (`user_id`));
 
 -- user table data
 INSERT INTO `scrumdb`.`user` (`user_id`, `username`, `password`) VALUES (1, 'anisha', 'anisha');
