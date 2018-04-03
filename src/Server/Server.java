@@ -100,11 +100,11 @@ public class Server {
 		//send to collage builder
 			CollageBuilder cb = new CollageBuilder(images,shape);
 			BufferedImage resultImage = cb.createCollageWithImages(width, height, border, rotation, filter);
-			Result succsessfulResult = new Result(ResultType.success, keyword, resultImage);
+			Result succsessfulResult = new Result(ResultType.success, keyword, resultImage, width, height, filter, border, rotation, shape);
 			return succsessfulResult;
 		}
 		else {
-		 	Result failureResult = new Result(ResultType.failure, keyword, Constants.ERROR_MESSAGE);
+		 	Result failureResult = new Result(ResultType.failure, keyword, Constants.ERROR_MESSAGE, width, height, filter, border, rotation, shape);
 		 	return failureResult;
 		 }
 		 

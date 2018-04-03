@@ -8,6 +8,7 @@
 	import="java.util.*"
 	import="data.Constants"
 	import="java.awt.image.BufferedImage"
+	import="Server.Filter"
 %>
 
 <!doctype html>
@@ -43,7 +44,7 @@
 								// if currentResult is failure, no caption
 								if (currentResult.isSuccess()) {
 									// if currentResult is success, set to "Collage for [keyword]"
-									caption = "Collage for topic " + currentResult.getKeyword();
+									caption = "Collage for topic " + currentResult.getKeyword() +", shape " + currentResult.getShape();
 								}	
 							}
 							%>
@@ -93,7 +94,10 @@
 							type = "text"
 							class ="input-box"
 							placeholder = "Enter collage width"
-							value = "800"
+							<%if(currentResult != null){%>
+								value = <%=currentResult.getWidth()%>
+							<%
+							}%>
 						>
 						</div>
 						<div class="option-line" id="collage-height" align="right" style="float:right;width:50%;">
@@ -103,7 +107,10 @@
 							type = "text"
 							class ="input-box"
 							placeholder = "Enter collage height"
-							value = "600"
+							<%if(currentResult != null){%>
+								value = <%=currentResult.getHeight()%>
+							<%
+							}%>
 						>
 						</div>
 					</div>
@@ -117,7 +124,13 @@
 								type ="radio"
 								name = "filter"
 								value="No filter"
-								checked
+								<%if(currentResult == null){%>
+										Checked
+								<%}else{
+									if(currentResult.getFilter() == null){%>
+										Checked
+									<%}
+								}%>
 							>
 								No filter
 								
@@ -126,6 +139,11 @@
 								type ="radio"
 								name = "filter"
 								value="Black and White"
+								<%if(currentResult != null && currentResult.getFilter() != null){
+									if(currentResult.getFilter().equals(Filter.BLACK_AND_WHITE)){%>
+										Checked
+									<%}
+								}%>
 							>
 								Black and White
 								
@@ -134,6 +152,11 @@
 								type ="radio"
 								name = "filter"
 								value="Grayscale"
+								<%if(currentResult != null && currentResult.getFilter() != null){
+									if(currentResult.getFilter().equals(Filter.GREY_SCALE)){%>
+										Checked
+									<%}
+								}%>
 							>
 								Grayscale
 								<input
@@ -141,6 +164,11 @@
 								type ="radio"
 								name = "filter"
 								value="Sepia"
+								<%if(currentResult != null && currentResult.getFilter() != null){
+									if(currentResult.getFilter().equals(Filter.SEPIA)){%>
+										Checked
+									<%}
+								}%>
 							>
 								Sepia
 						</div>
@@ -153,6 +181,11 @@
 								type ="radio"
 								name = "rotation"
 								value="On"
+								<%if(currentResult != null){
+									if(currentResult.isRotation()){%>
+										Checked
+									<%}
+								}%>
 							>
 								On
 								<input
@@ -160,7 +193,13 @@
 								type ="radio"
 								name = "rotation"
 								value="Off"
-								Checked
+								<%if(currentResult == null){%>
+										Checked
+								<%}else{
+									if(!currentResult.isRotation()){%>
+										Checked
+									<%}
+								}%>
 							>
 								Off
 						</div>
@@ -173,6 +212,11 @@
 								type ="radio"
 								name = "border"
 								value="On"
+								<%if(currentResult != null){
+									if(currentResult.isBorder()){%>
+										Checked
+									<%}
+								}%>
 							>
 								On
 								<input
@@ -180,7 +224,13 @@
 								type ="radio"
 								name = "border"
 								value="Off"
-								Checked
+								<%if(currentResult == null){%>
+										Checked
+								<%}else{
+									if(!currentResult.isBorder()){%>
+										Checked
+									<%}
+								}%>
 							>
 								Off
 						</div>
@@ -191,6 +241,10 @@
 							class ="input-box"
 							type="text"
 							placeholder="Enter topic"
+							<%if(currentResult != null){%>
+								value = <%=currentResult.getKeyword()%>
+							<%
+							}%>
 						/>
 					    </div>
 						<div class="option-line" id="shape-input-container" align="right" style="float:right; width:50%;">
@@ -200,6 +254,10 @@
 							type="text"
 							class ="input-box"
 							placeholder="Enter shape"
+							<%if(currentResult != null){%>
+								value = <%=currentResult.getShape()%>
+							<%
+							}%>
 						>
 						</div>
 				<%-- #search-container holds search text bar,
