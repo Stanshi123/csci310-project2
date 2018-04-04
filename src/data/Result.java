@@ -16,7 +16,19 @@ public class Result {
 	public boolean border = false;
 	public boolean rotation = false;
 	public String shape = null;
-	
+
+	public Result(ResultType resultType, String keyword, String errorMessage) {
+		this.resultType = resultType;
+		this.keyword = keyword;
+		this.errorMessage = errorMessage;
+	}
+
+	public Result(ResultType resultType, String keyword, BufferedImage collageImage) {
+		this.resultType = resultType;
+		this.keyword = keyword;
+		this.collageImage = collageImage;
+	}
+
 	public Result(ResultType resultType, String keyword, String errorMessage, int width, int height, Filter filter, boolean border, boolean rotation, String shape) {
 		this.resultType = resultType;
 		this.keyword = keyword;

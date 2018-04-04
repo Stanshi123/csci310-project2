@@ -75,7 +75,7 @@ public class CollageBuilder {
         g.drawImage(backGround,0,0,null);
         g.setClip(null);
         g.setStroke(new BasicStroke(0));
-        g.setColor(Color.BLACK);
+        //g.setColor(Color.BLACK);
         g.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);

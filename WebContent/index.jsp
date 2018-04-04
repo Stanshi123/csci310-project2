@@ -43,7 +43,7 @@
 					class="login-page-button"
 				>Login</button>
 				<button
-					id="signup-button"
+					id="signUpButton"
 					class="login-page-button"
 				>Sign Up</button> 
 			</div> 
@@ -55,31 +55,57 @@
 <script>
 	var loginButton = document.querySelector("#loginButton");
 	var error_msg = document.querySelector("#error_msg");
-	
+	var signUpButton = document.querySelector("#signUpButton");
+
+	signUpButton.onclick = function () {
+        var username = document.querySelector("#username").value;
+        var password = document.querySelector("#password").value;
+
+        if (username == "" || password == "") {
+            error_msg.innerHTML = "A required field is empty.";
+            return false;
+        }
+        $.ajax({
+            url:"${pageContext.request.contextPath}/SignUpServlet",
+            type:"POST",
+            data: {
+                username: username,
+                password: password
+            },
+            success: function(response){
+                if (response == "success") {
+                    window.location.replace("http://localhost:8080/mainpage.jsp");
+                } else {
+                    error_msg.innerHTML = "Wrong username/password combination.";
+                }
+            }
+        });
+    }
+
 	loginButton.onclick=function() {
-		var username = document.querySelector("#username").value;
-		var password = document.querySelector("#password").value;
-		
-		if (username == "" || password == "") {
-			error_msg.innerHTML = "A required field is empty.";
-			return false;
-		}
-		$.ajax({
-			url:"${pageContext.request.contextPath}/LoginServlet",
-			type:"POST",
-			data: { 
-				username: username,
-				password: password
-			},
-			success: function(response){
-				if (response == "success") {
-					window.location.replace("http://localhost:8080/CS310-P2/jsp/mainpage.jsp");
-				} else {
-					error_msg.innerHTML = "Wrong username/password combination.";
-				}
-			}
-		});
-	}
+        var username = document.querySelector("#username").value;
+        var password = document.querySelector("#password").value;
+
+        if (username == "" || password == "") {
+            error_msg.innerHTML = "A required field is empty.";
+            return false;
+        }
+        $.ajax({
+            url:"${pageContext.request.contextPath}/LoginServlet",
+            type:"POST",
+            data: {
+                username: username,
+                password: password
+            },
+            success: function(response){
+                if (response == "success") {
+                    window.location.replace("http://localhost:8080/mainpage.jsp");
+                } else {
+                    error_msg.innerHTML = "Wrong username/password combination.";
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

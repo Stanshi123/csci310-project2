@@ -66,7 +66,7 @@ public class SignUpServlet extends HttpServlet {
 			try {
 				// establish connection
 				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=S(5mIguLQg&useSSL=false");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=root&useSSL=false");
 				
 				statement = conn.createStatement(); // SQL statement
 				
