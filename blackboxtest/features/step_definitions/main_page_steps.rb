@@ -66,5 +66,14 @@ Then(/^there is a build collage button$/) do
   expect(page.find_by_id("search-bar-submit").native.text).to eq "Build Collage"
 end
 
+Given (/^the User has saved previously built collages$/) do
+  fill_in('search-bar-input', :with => "USC")
+  fill_in('shape-input', :with => "USC")
+  page.find_by_id("search-bar-submit").click()
+  sleep(10.to_i)
+  page.find_by_id("saveButton").click()
+end
 
-
+Then (/^the collage gallery should show previously built collages corresponding to the User$/) do
+  page.find_by_id("collage-area").text.should != ''
+end
