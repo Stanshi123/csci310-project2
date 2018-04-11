@@ -47,3 +47,12 @@ Background:
   Scenario: User failed to build a collage
   		Given the User failed to build a collage
   		Then the main collage space should display an error message "Insufficient number of images found."
+
+  Scenario: Clicking on Export Collage Button allows user to download of collage
+  	When Export Collage Button is clicked
+  	Then User is able to download PNG of Collage
+  	
+  Scenario: Size of exported image should be same as currently displayed collage
+  	When Export Collage Button is clicked
+  	And Image is successfully exported
+  	Then Size of Downloaded image is the same as Currently displayed collage
