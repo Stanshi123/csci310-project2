@@ -77,3 +77,25 @@ end
 Then (/^the collage gallery should show previously built collages corresponding to the User$/) do
   page.find_by_id("collage-area").text.should != ''
 end
+
+Given (/^the User is building a collage$/) do
+  fill_in('search-bar-input', :with => "Stanford")
+  fill_in('shape-input', :with => "Stanford")
+  page.find_by_id("search-bar-submit").click()
+end
+
+Then (/^an animation of loading symbol should show up$/) do
+  page.should have_content("animation");
+  sleep(10.to_i)
+end
+
+Given (/^the User failed to build a collage$/) do
+  fill_in('search-bar-input', :with => "aiofjalksdjf;lwaejf;sdifja;weakfldsjvioc")
+  fill_in('shape-input', :with => "USC")
+  page.find_by_id("search-bar-submit").click()
+  sleep(10.to_i)
+end
+
+Then (/^the main collage space should display an error message "Insufficient number of images found."$/) do
+  page.should have_content("collage-placeholder")
+end
