@@ -40,3 +40,10 @@ Background:
 		Given the User has saved previously built collages
 		Then the collage gallery should show previously built collages corresponding to the User
 
+  Scenario: User is building a collage
+  		Given the user is building a collage
+  		Then an animation of loading symbol should show up
+
+  Scenario: User failed to build a collage
+  		Given the User failed to build a collage
+  		Then the main collage space should display an error message "Insufficient number of images found."
