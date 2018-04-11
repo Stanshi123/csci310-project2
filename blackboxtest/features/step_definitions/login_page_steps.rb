@@ -17,4 +17,3 @@ end
 Then(/^there is a sign\-up button$/) do
   page.should have_selector("button[id=signup-button]")
 end
-
