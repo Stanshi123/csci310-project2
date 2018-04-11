@@ -10,12 +10,12 @@ And (/^User has saved a collage to history$/) do
 	fill_in('search-bar-input', :with => "USC")
 	fill_in('shape-input', :with => "USC")
 	page.find_by_id("search-bar-submit").click()
-	sleep(10.to_i)
+	sleep(20.to_i)
 	page.find_by_id("saveButton").click()
 	fill_in('search-bar-input', :with => "UCLA")
 	fill_in('shape-input', :with => "UCLA")
 	page.find_by_id("search-bar-submit").click()
-	sleep(10.to_i)
+	sleep(20.to_i)
 	page.find_by_id("saveButton").click()
 end
 
@@ -32,5 +32,42 @@ When (/^the User clicks on Delete Collage button$/) do
 end
 
 Then (/^the related collage should disappear from the main page$/) do
-	page.should have_no_content("collage-UCLA")
+	page.should have_no_content("collage-USC")
+end
+
+When (^/the User has reloaded the page$/) do
+	driver.navigate.refresh
+end
+
+When (^/creates a new session$/) do
+	page.driver.browser.close
+	visit "http://localhost:8080/Sprint1/mainpage.jsp"
+end
+
+Given (/^the User has built a collage$/) do
+	fill_in('search-bar-input', :with => "UCSD")
+	fill_in('shape-input', :with => "UCSD")
+	page.find_by_id("search-bar-submit").click()
+	sleep(20.to_i)
+end
+
+Given (/^the User did not save the previously built collage$/) do
+
+end
+
+Then (/^the previously built collage should not appear on the main page$/) do
+	page.should have_no_content("collage-UCSD")
+end
+
+Given (/^the User has built another collage$/) do
+	fill_in('search-bar-input', :with => "UCI")
+	fill_in('shape-input', :with => "UCI")
+	page.find_by_id("search-bar-submit").click()
+	sleep(20.to_i)
+end
+
+Then (/^the previously built collage should not be saved$/) do
+	page.driver.browser.close
+	visit "http://localhost:8080/Sprint1/mainpage.jsp"
+	page.should have_no_content("collage-UCSD")	
 end

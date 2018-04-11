@@ -20,7 +20,8 @@ Background:
 		Then the previously deleted collage should not appear on the main page
 
 	Scenario: Requirements for when collage is not saved to gallery
-		Given the User did not save the previously built collage
+		Given the User has built a collage
+		And the User did not save the previously built collage
 		When the User has reloaded the page
 		Or creates a new session
 		Then the previously built collage should not appear on the main page
@@ -28,7 +29,7 @@ Background:
 	Scenario: User builds a collage without saving previous collage
 		Given the User has built a collage
 		And the User did not save the previously built collage
-		And the User has built a collage
+		And the User has built another collage
 		Then the previously built collage should not appear on the main page
 
 	Scenario: User clicks on collage in gallery without saving previous collage
