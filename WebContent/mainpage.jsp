@@ -39,6 +39,7 @@
 					>
 							<%
 							String caption = "";
+							String palceholder = "Egalloc";
 							Result currentResult = (Result) session.getAttribute(Constants.SESSION_CURRENT_RESULT);
 							if(currentResult != null){
 								// if currentResult is failure, no caption
@@ -47,9 +48,19 @@
 									caption = "Collage for topic " + currentResult.getKeyword() +", shape " + currentResult.getShape();
 								}	
 							}
+							else
+							{
+								%>
+									<div style="font-family:Helvetica, Arial, sans-serif; color: white;font-size:130px;">
+									<%=palceholder%>
+									 </div>
+								<% 
+							}
 							%>
 						<%=caption%>
 					</div>
+					
+					
 
 					<%-- #collage-area holds a collage image or a error message --%>
 					<div
@@ -86,34 +97,37 @@
 				
 				
 				<div id="collage-option-container" style="width:50%; margin-left:auto; margin-right:auto; text-align: left; padding:50px;"  >
-					<div id= "dimension-input">
-						<div class="option-line" id="collage-width" style="float:left;width:50%;">
-						Collage Width:
+				
+				
+				
+										<div class="option-line" id="search-bar-container" style="float:left; width:50%;">
+						Collage Topic:
 						<input
-							id="collage-width-input"
-							type = "text"
+							id="search-bar-input"
 							class ="input-box"
-							placeholder = "Enter collage width"
+							type="text"
+							placeholder="Enter topic"
 							<%if(currentResult != null){%>
-								value = <%=currentResult.getWidth()%>
+								value = <%=currentResult.getKeyword()%>
+							<%
+							}%>
+						/>
+					    </div>
+						<div class="option-line" id="shape-input-container" align="right" style="float:right; width:50%;">
+						Collage Shape:
+						<input 
+							id ="shape-input" 
+							type="text"
+							class ="input-box"
+							placeholder="Enter shape"
+							<%if(currentResult != null){%>
+								value = <%=currentResult.getShape()%>
 							<%
 							}%>
 						>
 						</div>
-						<div class="option-line" id="collage-height" align="right" style="float:right;width:50%;">
-						Collage Height:
-						<input
-							id="collage-height-input"
-							type = "text"
-							class ="input-box"
-							placeholder = "Enter collage height"
-							<%if(currentResult != null){%>
-								value = <%=currentResult.getHeight()%>
-							<%
-							}%>
-						>
-						</div>
-					</div>
+						
+
 						
 						<br>
 						<div class="option-line" id = "filter-input">
@@ -234,32 +248,36 @@
 							>
 								Off
 						</div>
-						<div class="option-line" id="search-bar-container" style="float:left; width:50%;">
-						Collage Topic:
+						
+											<div id= "dimension-input">
+						<div class="option-line" id="collage-width" style="float:left;width:50%;">
+						Collage Width:
 						<input
-							id="search-bar-input"
+							id="collage-width-input"
+							type = "text"
 							class ="input-box"
-							type="text"
-							placeholder="Enter topic"
+							placeholder = "Enter collage width"
 							<%if(currentResult != null){%>
-								value = <%=currentResult.getKeyword()%>
-							<%
-							}%>
-						/>
-					    </div>
-						<div class="option-line" id="shape-input-container" align="right" style="float:right; width:50%;">
-						Collage Shape:
-						<input 
-							id ="shape-input" 
-							type="text"
-							class ="input-box"
-							placeholder="Enter shape"
-							<%if(currentResult != null){%>
-								value = <%=currentResult.getShape()%>
+								value = <%=currentResult.getWidth()%>
 							<%
 							}%>
 						>
 						</div>
+						<div class="option-line" id="collage-height" align="right" style="float:right;width:50%;">
+						Collage Height:
+						<input
+							id="collage-height-input"
+							type = "text"
+							class ="input-box"
+							placeholder = "Enter collage height"
+							<%if(currentResult != null){%>
+								value = <%=currentResult.getHeight()%>
+							<%
+							}%>
+						>
+						</div>
+					</div>
+
 				<%-- #search-container holds search text bar,
 				"Build Collage" button, and "Export Collage" button --%>
 				<div class="option-line" id="search-button-container" style="padding-top:50px;padding-bottom:50px;">
