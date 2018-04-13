@@ -114,8 +114,4 @@ public class CollageHistoryServlet extends HttpServlet {
 	public Map<String, String> getCollages() {
 		return collages;
 	}
-	
-	public void deleteAfterTest() {
-		
-	}
 }

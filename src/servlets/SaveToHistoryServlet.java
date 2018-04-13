@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -58,6 +59,9 @@ public class SaveToHistoryServlet extends HttpServlet {
 		title = request.getParameter("title");
 		img_src = request.getParameter("img_src");
 		
+		String [] parts = img_src.split(",");
+		img_src = parts[1];
+		
 		// save image to server
 		BufferedImage image = null;
 		byte[] imageByte;
@@ -71,7 +75,12 @@ public class SaveToHistoryServlet extends HttpServlet {
 		bais.close();
 		
 		// set filepath and write image to file
-		String filePath = user_id + "/" + title + "." + format;
+		String folderPath = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/collages/" + user_id;
+		File userFolder = new File(folderPath);
+		if(!userFolder.exists()){
+			userFolder.mkdir();
+		}
+		String filePath = folderPath + "/" + title + "." + format;
 		File outputFile = new File(filePath);
 		ImageIO.write(image, format, outputFile);
 
