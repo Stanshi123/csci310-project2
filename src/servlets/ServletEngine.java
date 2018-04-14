@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,9 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.awt.image.BufferedImage;
+
 import Server.Server;
 import data.Constants;
 import data.Result;
+
 
 /**
  * Servlet implementation class ServletEngine
@@ -51,23 +59,52 @@ public class ServletEngine extends HttpServlet {
 		boolean border = (borderString.equals("On"));
 		
 		if (keyword != null && shape != null) {
-			Result result = sendKeywordToServer(keyword, shape, width, height, filterString, rotation, border); 
-			setSessionAttributes(request, result);
+			Result result = sendKeywordToServer(keyword, shape, width, height, filterString, rotation, border);
+			BufferedImage bImage = result.getCollageImage();
+			if (bImage != null) {
+				
+				String base64 = Constants.getImage(bImage);
+				String title = result.getKeyword();
+				String json = "";
+				
+				Map<String, String> values = new HashMap<String, String>();
+				values.put("src", base64);
+				values.put("title", title);
+				values.put("success", "success");
+				
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					json = mapper.writeValueAsString(values);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+				
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+				setSessionAttributes(request, result);
+				Timestamp finishTime = new Timestamp(System.currentTimeMillis());
+				System.out.println("Request Finished " + finishTime);
+				return;
+			}
+			// setSessionAttributes(request, result);
 			Timestamp finishTime = new Timestamp(System.currentTimeMillis());
 			System.out.println("Request Finished " + finishTime);
-			return;	// completed request, return
 		}
-
-		/* Check if request is for viewing a saved collage */
-		// get saved collage id from HttpServletRequest
-		/*
-		String scIDString = getSavedCollageIDFromRequest(request); 
-		if (scIDString != null) {
-			Integer scID = Integer.parseInt(scIDString);	
-			viewSavedCollage(request, scID);
-			return;	// completed request, return
+		String json = "";
+		Map<String, String> values = new HashMap<String, String>();
+		values.put("success", "fail");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			json = mapper.writeValueAsString(values);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 		}
-		*/
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);
 	}
 
 	/**
