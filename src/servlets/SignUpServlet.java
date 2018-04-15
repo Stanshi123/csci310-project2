@@ -1,5 +1,7 @@
 package servlets;
 
+import data.PasswordHasher;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import static data.Constants.DEFAULT_COST;
 
 
 /**
@@ -86,9 +90,14 @@ public class SignUpServlet extends HttpServlet {
 				if (count != 0)
 					res = "fail";
 				else {
+					PasswordHasher hasher = new PasswordHasher(DEFAULT_COST);
+					String hashedPassword = hasher.hash(password.toCharArray());
 					query
 						= "INSERT INTO user (username, password) "
-							+ "VALUES ('" + username + "', '" + password + "');";
+							+ "VALUES ('" + username + "', '" + hashedPassword + "');";
+
+					System.out.println("hashed " + hasher.hash(password.toCharArray()));
+
 					action = statement.executeUpdate(query);
 					if (action == 1) {
 						res = "success";
@@ -97,7 +106,7 @@ public class SignUpServlet extends HttpServlet {
 							= "SELECT "
 								+ "user_id "
 							+ "FROM user "
-							+ "WHERE username = '" + username + "' AND password = '" + password + "';";
+							+ "WHERE username = '" + username + "' AND password = '" + hashedPassword + "';";
 						resultSet = statement.executeQuery(query);
 						while (resultSet.next()) {
 							user_id = resultSet.getInt("user_id");

@@ -25,7 +25,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 @WebServlet("/CollageHistoryServlet")
 public class CollageHistoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private Map<String, String> collages = null;
+	private Map<String, String> collages = null;
+    private Map<Integer, Map<String, String>> result = null;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -66,16 +67,22 @@ public class CollageHistoryServlet extends HttpServlet {
 			query = "SELECT * FROM saved_collage WHERE user_id = " + user_id;
 			resultSet = statement.executeQuery(query);
 
-			collages = new HashMap<String, String>();
+			result = new HashMap<Integer, Map<String, String>>();
 			while (resultSet.next()) {
-				String title = resultSet.getString("collage_name");
-				String path = resultSet.getString("collage_path");
-				collages.put(title, path);
+				collages = new HashMap<String, String>();
+				String title = resultSet.getString("title");
+				String path = resultSet.getString("path");
+				int saved_collage_id = resultSet.getInt("saved_collage_id");
+				
+				collages.put("title", title);
+				collages.put("path", path);
+				
+				result.put(saved_collage_id, collages);
 			}
 			
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				json = mapper.writeValueAsString(collages);
+				json = mapper.writeValueAsString(result);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
@@ -111,7 +118,7 @@ public class CollageHistoryServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
-	public Map<String, String> getCollages() {
-		return collages;
+	public Map<Integer, Map<String, String>> getCollages() {
+		return result;
 	}
 }

@@ -1,5 +1,5 @@
 
-package whiteboxtests;
+package unitTest;
 
 import static org.junit.Assert.assertTrue;
 
@@ -48,7 +48,7 @@ public class DeleteCollageTest extends Mockito {
     	
     	historyServlet = new CollageHistoryServlet();
     	historyServlet.doGet(request, response);
-    	Map<String, String> collages = new HashMap<String, String>();
+    	Map<Integer, Map<String, String>> collages;
     	collages = historyServlet.getCollages();
     	currentSize = collages.size(); // size of collage history before deleting
 
@@ -84,8 +84,7 @@ public class DeleteCollageTest extends Mockito {
     	
     	assertTrue(response != null);
     	
-    	Map<String, String> collages = new HashMap<String, String>();
-    	collages = historyServlet.getCollages();
+    	Map<Integer, Map<String, String>> collages = historyServlet.getCollages();
     	currentSize = collages.size(); // size of collage history before deleting
 
     	// now use deleteServlet to delete the dummy collage

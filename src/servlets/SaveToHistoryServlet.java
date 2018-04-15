@@ -1,12 +1,12 @@
 package servlets;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +27,9 @@ import java.io.File;
 @WebServlet("/SaveToHistoryServlet")
 public class SaveToHistoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+//	private static final String rootPathIvy = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/collages/";
+	private static final String rootPathStan = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages";
+	//private static final String rootPathWilliam = "C:\\Users\\William\\eclipse-workspace\\csci310-project2\\WebContent\\collages/";
 	String result = "";
 	
     /**
@@ -73,18 +76,9 @@ public class SaveToHistoryServlet extends HttpServlet {
 		ByteArrayInputStream bais = new ByteArrayInputStream(imageByte);
 		image = ImageIO.read(bais);
 		bais.close();
-		
-		// set filepath and write image to file
-		String folderPath = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/collages/" + user_id;
-		File userFolder = new File(folderPath);
-		if(!userFolder.exists()){
-			userFolder.mkdir();
-		}
-		String filePath = folderPath + "/" + title + "." + format;
-		File outputFile = new File(filePath);
-		ImageIO.write(image, format, outputFile);
 
 		// set SQL variables
+		PreparedStatement pStatement = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
 		Connection conn = null;
@@ -97,16 +91,40 @@ public class SaveToHistoryServlet extends HttpServlet {
 			
 			statement = conn.createStatement(); // SQL statement
 			
-			// check if image title already exists
+			query = "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES\r\n" + 
+					"     WHERE TABLE_SCHEMA = 'scrumdb' AND TABLE_NAME = 'saved_collage';";
+			resultSet = statement.executeQuery(query);
 			
-			// insert image into database
-			query = "INSERT INTO saved_collage (collage_name, collage_path, user_id) "
-					+ "VALUES ('"+title+"','"+filePath+"',"+user_id+");";
-			action = statement.executeUpdate(query);
-			
-			if (action == 1) {
-				result = "success";
+			if (resultSet.next()) {
+				int AI_value = resultSet.getInt("AUTO_INCREMENT");
+				
+				// set filepath and write image to file
+				String folderPath = rootPathStan + user_id + "/";
+				String filePath = "collages/"+user_id+"/collage-"+AI_value+"."+format;
+
+				File userFolder = new File(folderPath);
+				if(!userFolder.exists()){
+					userFolder.mkdir();
+				}
+
+				File outputFile = new File(folderPath + "/collage-"+AI_value+ "." + format);
+				ImageIO.write(image, format, outputFile);
+				
+				// insert image into database
+				query = "INSERT INTO saved_collage (title, path, user_id) VALUES (?, ?, ?);";
+				
+				pStatement = conn.prepareStatement(query);
+				pStatement.setString(1, title);
+				pStatement.setString(2, filePath);
+				pStatement.setInt(3, user_id);
+				action = pStatement.executeUpdate();
+				
+				if (action == 1) {
+					result = "success";
+				}
+				
 			}
+			
 		} catch (SQLException sqle) {
 			System.out.println ("SQLException: " + sqle.getMessage());
 		} catch (ClassNotFoundException cnfe) {

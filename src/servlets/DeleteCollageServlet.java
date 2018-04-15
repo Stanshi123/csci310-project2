@@ -28,6 +28,10 @@ import java.util.HashMap;
 @WebServlet("/DeleteCollageServlet")
 public class DeleteCollageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+//	private static final String rootPathIvy = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/";
+	private static final String rootPathStan = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages";
+	//private static final String rootPathWilliam = "C:\\Users\\William\\eclipse-workspace\\csci310-project2\\WebContent\\";
+	
 	String result = "";
 	
     /**
@@ -56,7 +60,7 @@ public class DeleteCollageServlet extends HttpServlet {
 		result = "fail";
 			
 		
-		saved_collage_id = Integer.parseInt(request.getParameter("collage_id"));
+		saved_collage_id = Integer.parseInt(request.getParameter("saved_collage_id"));
 
 		// set SQL variables
 		Statement statement = null;
@@ -70,15 +74,25 @@ public class DeleteCollageServlet extends HttpServlet {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=root&useSSL=false");
 			
 			statement = conn.createStatement(); // SQL statement
-			
-			// check if image title already exists
-			
-			// insert image into database
-			query = "DELETE FROM saved_collage WHERE saved_collage_id = " + saved_collage_id + ";";
 
-			action = statement.executeUpdate(query);
-			if (action == 1) {
-				result = "success";
+			// get file path
+			query = "SELECT path FROM saved_collage WHERE saved_collage_id = " + saved_collage_id + ";";
+			resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				String path = rootPathStan+ resultSet.getString("path");
+				// delete from database
+				query = "DELETE FROM saved_collage WHERE saved_collage_id = " + saved_collage_id + ";";
+
+				action = statement.executeUpdate(query);
+
+				File file = new File(path);
+				
+				if (action == 1 && file.delete()) {     
+					result = "success";
+				}
+			    else {
+					result = "fail";	  
+				}
 			}
 			
 		} catch (SQLException sqle) {

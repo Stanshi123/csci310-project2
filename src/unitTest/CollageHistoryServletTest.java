@@ -54,7 +54,7 @@ public class CollageHistoryServletTest extends Mockito {
 		String format = "png";
 		
 	    	// set filepath and write image to file
-		String filePath = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/collages/" + TEST_USER_ID + "/" +title + "." + format;
+		String filePath = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages" + TEST_USER_ID + "/" +title + "." + format;
 		File outputFile = new File(filePath);
 		ImageIO.write(image, "png", outputFile);
 
@@ -105,7 +105,7 @@ public class CollageHistoryServletTest extends Mockito {
 	    	
 	    	assertTrue(response != null);
 	    	
-	    	Map<String, String> collages = new HashMap<String, String>();
+	    	Map<Integer, Map<String, String>> collages = new HashMap<Integer , Map<String, String>>();
 	    	collages = servlet.getCollages(); // returns a map of title and image file path
 	    	
 	    	// test_user has collage history, so should return 1 result
@@ -126,7 +126,7 @@ public class CollageHistoryServletTest extends Mockito {
 	    	
 	    	assertTrue(response != null);
 	    	
-	    	Map<String, String> collages = new HashMap<String, String>();
+	    	Map<Integer, Map<String, String>> collages = new HashMap<Integer, Map<String, String>>();
 	    	collages = servlet.getCollages(); // returns a map of title and image file path
 	    	
 	    	// empty_user has no collage history, so should return 0 results
@@ -147,7 +147,7 @@ public class CollageHistoryServletTest extends Mockito {
 	    	
 	    	assertTrue(response != null);
 	    	
-	    	Map<String, String> collages = new HashMap<String, String>();
+	    	Map<Integer, Map<String, String>> collages = new HashMap<Integer,Map<String, String>>();
 	    	collages = servlet.getCollages(); // returns a map of title and image file path
 	    	assertTrue(collages.size() == 0);
     }

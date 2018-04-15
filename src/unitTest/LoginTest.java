@@ -16,8 +16,8 @@ import servlets.LoginServlet;
 public class LoginTest extends Mockito {
 	
 	private LoginServlet servlet;
-	private static final String USERNAME = "test_user";
-	private static final String PASSWORD = "test_user";
+	private static final String USERNAME = "stan";
+	private static final String PASSWORD = "stan";
 	private static final String WRONG_PASSWORD = "wrong";
 	private static final String EMPTY_STRING = "";
     
