@@ -65,7 +65,7 @@ public class CollageBuilder {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, textImage.getWidth(), textImage.getHeight());
         FontRenderContext frc = g.getFontRenderContext();
-        Font font = createFont(textImage.getWidth, textImage.getHeight, shapeKeyword.length());
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)backGround.getWidth() * 1.5)/(shapeKeyword.length()));
         GlyphVector gv = font.createGlyphVector(frc, shapeKeyword);
         Rectangle2D box = gv.getVisualBounds();
         int xOff = (width - (int)box.getWidth()) / 2 - (int)box.getX();
@@ -149,24 +149,6 @@ public class CollageBuilder {
         return image;
     }
 
-    protected Font createFont(int width, int height, int wordLength){
-        Font font = null;
-        if(height < width / 2) {
-            if(wordLength >= 3) {
-                font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)height * 2.7 / wordLength));
-            }else {
-                font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)height * 1.1));
-            }
-        }else {
-            if(wordLength >= 3) {
-                font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)width * 1.2 / wordLength));
-            }else {
-                font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)width * 0.6));
-            }
-        }
-        return font;
-    }
-    
     protected BufferedImage addBlackAndWhiteFilter(BufferedImage img)
     {
         int w = img.getWidth();

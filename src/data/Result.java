@@ -69,10 +69,6 @@ public class Result {
 		return resultType == ResultType.success;
 	}
 
-	public ResultType getResultType() {
-		return resultType;
-	}
-
 	public int getWidth() {
 		return width;
 	}

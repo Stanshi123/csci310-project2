@@ -95,6 +95,7 @@ public class LoginServlet extends HttpServlet {
 
 					if (hasher.authenticate(password.toCharArray(),hashedPassword)) {
 						res = "success";
+						System.out.println("Login success user_id is: " + user_id);
 						session.setAttribute("user_id", user_id);
 					}
 				}

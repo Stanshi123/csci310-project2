@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class ServletEngineTest extends Mockito {
     private HttpServletResponse response = mock(HttpServletResponse.class);
 	
 	@Before
-	public void initialize() {
+	public void initialize() throws Exception {
 		URL imageURL = null;
 		try {
 			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
@@ -53,6 +55,8 @@ public class ServletEngineTest extends Mockito {
         when (request.getParameter(Constants.FILTER_PARAMETER)).thenReturn("No filter");
         when (request.getParameter(Constants.ROTATION_PARAMETER)).thenReturn("On");
         when (request.getParameter(Constants.BORDER_PARAMETER)).thenReturn("On");
+
+
 	}
 
 	@Test
@@ -62,8 +66,7 @@ public class ServletEngineTest extends Mockito {
     // Border On
 	public void testServletNoFilter() throws Exception {
 		new ServletEngine().doPost(request,response);
-		assertTrue(response != null);
-		
+        assertTrue(response != null);
 	}
 
     @Test

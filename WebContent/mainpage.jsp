@@ -32,10 +32,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 		<style>
 			#userID {
-				display: none;
+				/*display: none;*/
 			}
 			
-			.loader {
+			#loader {
 			    border: 16px solid #f3f3f3; /* Light grey */
 			    border-top: 16px solid #3498db; /* Blue */
 			    border-radius: 50%;
@@ -90,7 +90,8 @@
 						id="collage-area"
 						class="collage"
 						style="width: 800; height:600; margin-left:auto; margin-right:auto;" 
-					>				
+					>
+						<div id="animation">animation</div>
 						<%
 							if(currentResult != null){
 								if (currentResult.isSuccess()) {
@@ -136,7 +137,6 @@
 							type="text"
 							class ="input-box"
 							placeholder="Enter shape"
-							maxlength="5" 
 							<%if(currentResult != null){%>
 								value = <%=currentResult.getShape()%>
 							<%
@@ -273,6 +273,7 @@
 							type = "text"
 							class ="input-box"
 							placeholder = "Enter collage width"
+							value = "800"
 							<%if(currentResult != null){%>
 								value = <%=currentResult.getWidth()%>
 							<%
@@ -286,6 +287,7 @@
 							type = "text"
 							class ="input-box"
 							placeholder = "Enter collage height"
+							value = "600"
 							<%if(currentResult != null){%>
 								value = <%=currentResult.getHeight()%>
 							<%
@@ -343,9 +345,6 @@
 			var exportPDF = document.querySelector("#search-bar-export-pdf");
 			
 			saveButton.disabled = true;
-			if (document.querySelector("#main-collage") != null) {
-				saveButton.disabled = false;
-			}
 			
 			// retrieve gallery corresponding to user id
 			var user_id = document.querySelector("#userID").innerHTML;
@@ -367,7 +366,7 @@
 						
 						// create and initialize image element
 						var img = document.createElement("img");
-						img.src = response[key]["path"];
+						img.src = "https://localhost:8443/"+response[key]["path"];
 						img.alt = response[key]["title"];
 						img.id = "collage-"+key;
 						img.classList.add("collage-gallery");
@@ -423,8 +422,10 @@
 					shape: shape
 				};
 				
+				// TODO: show loading animation
 				var loader = document.createElement("div");
 				loader.classList.add("loader");
+				loader.id = "loader";
 				document.querySelector("#collage-area").innerHTML = "";
 				document.querySelector("#collage-area").appendChild(loader);
 				
@@ -458,7 +459,6 @@
 							// set image source and alt
 							var img = document.createElement("img");
 							img.src = "data:image/jpg;base64,"+response["src"]; // response["src"] should return 64 string
-							
 							img.alt = collageCaption.innerHTML // set response["title"] as image alt attribute
 							img.id = "main-collage";
 							
@@ -497,12 +497,15 @@
 					deleteButtons[i].onclick = function() {
 						
 						// get ID
+                        console.log("The id is" + this.id);
 						var id = this.id.split("-")[2];
 						var collageID = "collage-"+id;
 						
 						// get collage related to the clicked delete button
-						var relatingCollage = document.querySelector("#"+collageID);				
+						var relatingCollage = document.querySelector("#"+collageID);
+						console.log("ivy wants to see relating collage" + relatingCollage);
 						var saved_collage_id = id;
+						console.log("The id is" + id);
 						var currentID = document.querySelector("#"+this.id);
 						
 						// ajax functionality to remove from database
@@ -514,14 +517,17 @@
 								saved_collage_id: saved_collage_id
 							},
 							success: function(response){
+							    console.log("The response that ivy want to see: "+ response);
 								if (response == "success") {
-									alert("Collage has been deleted successfully");
+									//alert("Collage has been deleted successfully");
 									// remove collage and button after clicking on delete
-									relatingCollage.parentNode.removeChild(relatingCollage);
-									currentID.parentNode.removeChild(currentID);
+									if (relatingCollage.parentNode) {
+                                        relatingCollage.parentNode.removeChild(relatingCollage);
+                                        currentID.parentNode.removeChild(currentID);
+                                    }
 								}
 								else {
-									alert("Failed to delete collage");
+									//alert("Failed to delete collage");
 								}
 							}
 						});
@@ -584,7 +590,7 @@
 				
 				// if no collage is displayed, do nothing
 				if (collage == null) {
-					alert("No collage is displayed!");
+					//alert("No collage is displayed!");
 					return false;
 				}
 				
@@ -607,23 +613,27 @@
 					success: function(response){
 						
 						// if fail
-						if (response == "fail") {
+						if (response.split("-")[0] === "fail") {
 							alert("Could not save image to history");
 						}
 						else { // should return saved_collage_id
-							alert("Image saved to history");
+							//alert("Image saved to history");
 							var gallery = document.querySelector("#gallery");
 						
 							// create new image element
 							var img = document.createElement("img");
 							img.src = img_src;
-							img.id = "collage-"+response;
+							img.id = "collage-"+response.split("-")[1];
 							img.classList.add("collage-gallery");
+
+							//TODO: THE BUG IS HERE!!!!!!!!!!!!!!!
 							
 							// create new delete button
 							var deleteButton = document.createElement("button");
 							deleteButton.innerHTML = "Delete";
-							deleteButton.id = "delete-button-"+response;
+							console.log("Let's see what is response: " + response.split("-")[1]);
+							deleteButton.id = "delete-button-"+response.split("-")[1];
+                            console.log("Let's see this button: " + deleteButton.id);
 							deleteButton.classList.add("delete-button");
 							
 							// append to gallery section

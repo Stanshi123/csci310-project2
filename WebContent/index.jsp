@@ -62,9 +62,9 @@
 						success : function(response) {
 							if (response == "success") {
 								window.location
-										.replace("http://localhost:8080/mainpage.jsp");
+										.replace("mainpage.jsp");
 							} else {
-								error_msg.innerHTML = "Wrong username/password combination.";
+								error_msg.innerHTML = "Failed to register. Please try another username";
 							}
 						}
 					});
@@ -78,23 +78,22 @@
 				error_msg.innerHTML = "A required field is empty.";
 				return false;
 			}
-			$
-					.ajax({
-						url : "${pageContext.request.contextPath}/LoginServlet",
-						type : "POST",
-						data : {
-							username : username,
-							password : password
-						},
-						success : function(response) {
-							if (response == "success") {
-								window.location
-										.replace("http://localhost:8080/mainpage.jsp");
-							} else {
-								error_msg.innerHTML = "Wrong username/password combination.";
-							}
-						}
-					});
+			$.ajax({
+				url : "${pageContext.request.contextPath}/LoginServlet",
+				type : "POST",
+				data : {
+					username : username,
+					password : password
+				},
+				success : function(response) {
+					if (response == "success") {
+						window.location
+								.replace("mainpage.jsp");
+					} else {
+						error_msg.innerHTML = "Wrong username/password combination.";
+					}
+				}
+			});
 		}
 	</script>
 

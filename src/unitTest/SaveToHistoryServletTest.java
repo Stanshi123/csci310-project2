@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -28,16 +31,20 @@ import servlets.SaveToHistoryServlet;
 
 public class SaveToHistoryServletTest extends Mockito{
 	private SaveToHistoryServlet saveServlet;
-	private static final String INSERT_TEST_USER_ID = "11";
-	
+	private static final String INSERT_TEST_USER_ID = "1";
+
     @Test
     // collage history size of insert_test_user should increase by 1 after SQL query
     public void testSaveToHistory () throws Exception {
-	    	HttpServletRequest request = mock(HttpServletRequest.class);
-	    	HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+
+		StringWriter sw = new StringWriter();
+		PrintWriter writer = new PrintWriter(sw);
+		when(response.getWriter()).thenReturn(writer);
 	    	
-	    	URL imageURL = null;
-	    	BufferedImage image = null;
+		URL imageURL = null;
+		BufferedImage image = null;
 		try {
 			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
 		}catch(MalformedURLException e) {
@@ -47,17 +54,17 @@ public class SaveToHistoryServletTest extends Mockito{
 			image = ImageIO.read(imageURL);
 		}catch(IOException e){
 		}
-	    	
+
 		when (request.getParameter("title")).thenReturn("collage_test");
 		when (request.getParameter("user_id")).thenReturn(INSERT_TEST_USER_ID);
-	    	when (request.getParameter("format")).thenReturn("png");
-	    	when (request.getParameter("img_src")).thenReturn("Data:base64," + Constants.getImage(image));
-	    	when (request.getSession()).thenReturn(mock(HttpSession.class));
-	
-	    	saveServlet = new SaveToHistoryServlet();
-	    	saveServlet.doPost(request,  response);
-	    	
-	    	assertTrue(response != null);
+		when (request.getParameter("format")).thenReturn("png");
+		when (request.getParameter("img_src")).thenReturn("Data:base64," + Constants.getImage(image));
+		when (request.getSession()).thenReturn(mock(HttpSession.class));
+
+		saveServlet = new SaveToHistoryServlet();
+		saveServlet.doPost(request,  response);
+
+		assertTrue(response != null);
 	    	
 		// set SQL variables
 		Statement statement = null;
@@ -65,21 +72,21 @@ public class SaveToHistoryServletTest extends Mockito{
 		Connection conn = null;
 		String query = "";
 		String title = null;
-		
+
 		try {
 			// establish connection
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=root&useSSL=false");
-			
+
 			statement = conn.createStatement(); // SQL statement
-			
+
 			// check if user provides correct login credentials
 			query = "SELECT * FROM saved_collage WHERE user_id = " + INSERT_TEST_USER_ID;
 			resultSet = statement.executeQuery(query);
 
 			resultSet.next();
-			title = resultSet.getString("collage_name");
-			
+			title = resultSet.getString("title");
+
 		}catch (SQLException sqle) {
 			System.out.println ("SQLException: " + sqle.getMessage());
 		}finally {
@@ -88,11 +95,13 @@ public class SaveToHistoryServletTest extends Mockito{
 				if (resultSet != null) resultSet.close();
 				if (statement != null) statement.close();
 				if (conn != null) conn.close();
-				
+
 			} catch (SQLException sqle) {
 				System.out.println("sqle: " + sqle.getMessage());
 			}
 		}
+
+		System.out.println(title);
 		
 		assertTrue(title.equals("collage_test"));
     }

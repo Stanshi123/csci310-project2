@@ -1,5 +1,6 @@
 package servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,8 +63,8 @@ public class ServletEngine extends HttpServlet {
 		if (keyword != null && shape != null) {
 			Result result = sendKeywordToServer(keyword, shape, width, height, filterString, rotation, border);
 			BufferedImage bImage = result.getCollageImage();
+
 			if (bImage != null) {
-				
 				String base64 = Constants.getImage(bImage);
 				String title = result.getKeyword();
 				String json = "";
@@ -78,7 +80,8 @@ public class ServletEngine extends HttpServlet {
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
-				
+
+				if (response.getWriter() == null) {return;}
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);
@@ -101,7 +104,8 @@ public class ServletEngine extends HttpServlet {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		
+
+		if (response.getWriter() == null) {return;}
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);

@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class DeleteCollageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 //	private static final String rootPathIvy = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/";
-	private static final String rootPathStan = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages";
+	private static final String rootPathStan = "/Users/zifanshi/Documents/Egalloc-2.0/web/";
 	//private static final String rootPathWilliam = "C:\\Users\\William\\eclipse-workspace\\csci310-project2\\WebContent\\";
 	
 	String result = "";
@@ -39,14 +39,12 @@ public class DeleteCollageServlet extends HttpServlet {
      */
     public DeleteCollageServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -55,12 +53,16 @@ public class DeleteCollageServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int saved_collage_id;
+		int saved_collage_id = 0;
 		int action = 0;
 		result = "fail";
-			
-		
-		saved_collage_id = Integer.parseInt(request.getParameter("saved_collage_id"));
+
+		System.out.println("we are here babe");
+		System.out.println("Let's see" + request.getParameter("saved_collage_id"));
+		if (request.getParameter("saved_collage_id") != null) {
+			saved_collage_id = Integer.parseInt(request.getParameter("saved_collage_id"));
+			System.out.println("we are also here babe");
+		}
 
 		// set SQL variables
 		Statement statement = null;
@@ -70,6 +72,7 @@ public class DeleteCollageServlet extends HttpServlet {
 		
 		try {
 			// establish connection
+			System.out.println("then we got here babe");
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scrumdb?user=root&password=root&useSSL=false");
 			
@@ -77,8 +80,10 @@ public class DeleteCollageServlet extends HttpServlet {
 
 			// get file path
 			query = "SELECT path FROM saved_collage WHERE saved_collage_id = " + saved_collage_id + ";";
+			System.out.println("The id is" + saved_collage_id);
 			resultSet = statement.executeQuery(query);
 			if (resultSet.next()) {
+				System.out.println(resultSet.getString("path"));
 				String path = rootPathStan+ resultSet.getString("path");
 				// delete from database
 				query = "DELETE FROM saved_collage WHERE saved_collage_id = " + saved_collage_id + ";";
@@ -86,8 +91,8 @@ public class DeleteCollageServlet extends HttpServlet {
 				action = statement.executeUpdate(query);
 
 				File file = new File(path);
-				
-				if (action == 1 && file.delete()) {     
+				System.out.println("path:   " + path);
+				if (action == 1 && file.delete()) {
 					result = "success";
 				}
 			    else {

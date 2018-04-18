@@ -6,19 +6,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import org.mockito.Mockito;
 
 import servlets.SignUpServlet;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class SignUpTest extends Mockito {
 	
 	private SignUpServlet servlet;
 	private static final String NEW_USERNAME = "new_user";
 	private static final String NEW_PASSWORD = "new_user";
-	private static final String EXISTING_USERNAME = "test_user";
-	private static final String EXISTING_PASSWORD = "test_user";
+	private static final String EXISTING_USERNAME = "TEST";
+	private static final String EXISTING_PASSWORD = "TEST";
 	private static final String EMPTY_STRING = "";
     
     @Test

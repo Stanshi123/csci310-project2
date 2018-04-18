@@ -2,8 +2,8 @@ Feature: Functionality and display on main page.
   Main web page has a topic input box, collage shape input box, collage options, save to history button, export collage button, build collage button, and collage gallery. 
  
 Background:
-    Given User has navigated to localhost and login successfully
-    And User is on main Page
+    Given User has navigated to localhost and login successfully1
+    And User is on main Page1
 
   Scenario: Requirements on topic input box
 		Then there is a topic input box
@@ -27,11 +27,9 @@ Background:
   Scenario: Requirements on save to history button
 		Then there is a save to history button
 
-  Scenario: Requirements on view history button
-		Then there is a view history button
-
   Scenario: Requirements on export collage button. 
-		Then there is an export collage button
+		Then there is an export collage button-PNG
+    And there is an export collage button-PDF
 
   Scenario: Requirements on build collage button. 
 		Then there is a build collage button
@@ -49,7 +47,7 @@ Background:
   	Then the main collage space should display an error message "Insufficient number of images found."
 
   Scenario: Clicking on Export Collage Button allows user to download of collage
-  	When Export Collage Button is clicked
+  	When Export Collage-PNG Button is clicked
   	Then User is able to download PNG of Collage
   	
   Scenario: Size of exported image should be same as currently displayed collage

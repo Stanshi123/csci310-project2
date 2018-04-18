@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.regex.Pattern;
+
 import javax.imageio.ImageIO;
 
 import data.ResultType.ResultType;
@@ -47,5 +49,11 @@ public class Constants {
 	
 	public static final int COLLAGE_WIDTH = 2000;
 	public static final int COLLAGE_HEIGHT = 1500;
+	
+	public static final String ALGORITHM = "PBKDF2WithHmacSHA1";
+    public static final String ID = "$31$";
+    public static final int DEFAULT_COST = 16;
+    public static final int SIZE = 128;
+    public static final Pattern layout = Pattern.compile("\\$31\\$(\\d\\d?)\\$(.{43})");
 
 }

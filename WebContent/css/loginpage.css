@@ -20,7 +20,6 @@ body{
 	text-align: center;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: white;
-	
 	font-size:130px;
 	margin-top: 150px;
 }
@@ -50,6 +49,7 @@ body{
 	margin: auto;
 	margin-bottom: 20px;
 	text-align: center;
+	color: white;
 }
 
 

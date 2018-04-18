@@ -25,14 +25,16 @@ public class APICommunicator {
     private static final int THREAD_NUMBER = 40;
     private static final int SLEEP_TIME = 1000;
     private static final int ELEMENT_PER_REQUEST = 10;
-    private static final int SLEEP_TIME_OUT = 20;
+    private static final int SLEEP_TIME_OUT = 30;
     // The constants below are for the request
     private static final String URL_REQUEST_PROPERTY_KEY = "User-Agent";
     private static final String URL_REQUEST_PROPERTY_VALUE = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) " +
             "AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31";
     private static final String REQUEST_URL = "https://www.googleapis.com/customsearch/v1";
-    private static final String API_KEY = "AIzaSyDaJ74IGt2X5miRWhriFOImLkBSo1G_dNw";
-    private static final String CX = "003668417098658282383:2ym3vezfm44";
+    //private static final String API_KEY = "AIzaSyDaJ74IGt2X5miRWhriFOImLkBSo1G_dNw";
+    private static final String API_KEY = "AIzaSyBLNszm_Woz-zzCoMKcvg4_NiLZpBdGIVg";
+    // private static final String CX = "003668417098658282383:2ym3vezfm44";
+    private static final String CX ="017119615907930950041:zixia2uf7ck";
     private static final String SEARCH_TYPE = "image";
     private static final String API_REQUEST_PROPERTY_KEY = "Content-Type";
     private static final String API_REQUEST_PROPERTY_VALUE = "application/json";

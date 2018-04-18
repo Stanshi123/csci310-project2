@@ -28,18 +28,18 @@ import servlets.CollageHistoryServlet;
 public class CollageHistoryServletTest extends Mockito {
 	
 	private CollageHistoryServlet servlet;
-	private static final String TEST_USER_ID = "11"; // user_id for user test_user
-	private static final String EMPTY_USER_ID = "10"; // user_id for user empty_user
+	private static final String TEST_USER_ID = "1"; // user_id for user test_user
 	private static final String NON_EXISTANT_USER_ID = "0";
+
+	HttpServletRequest request = mock(HttpServletRequest.class);
+	HttpServletResponse response = mock(HttpServletResponse.class);
     
     @Test
     // Collage history for user test_user should return 10 collages
     public void testCollageHistory () throws Exception {
-	    	HttpServletRequest request = mock(HttpServletRequest.class);
-	    	HttpServletResponse response = mock(HttpServletResponse.class);
 	    	
-	    	URL imageURL = null;
-	    	BufferedImage image = null;
+		URL imageURL = null;
+		BufferedImage image = null;
 		try {
 			imageURL = new URL("https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d");
 		}catch(MalformedURLException e) {
@@ -54,8 +54,9 @@ public class CollageHistoryServletTest extends Mockito {
 		String format = "png";
 		
 	    	// set filepath and write image to file
-		String filePath = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages" + TEST_USER_ID + "/" +title + "." + format;
+		String filePath = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages/" + TEST_USER_ID + "/" +title + "." + format;
 		File outputFile = new File(filePath);
+		String imgPath = "collages/" + TEST_USER_ID + "/" +title + "." + format;
 		ImageIO.write(image, "png", outputFile);
 
 		// set SQL variables
@@ -76,8 +77,8 @@ public class CollageHistoryServletTest extends Mockito {
 			// check if image title already exists
 				
 			// insert image into database
-			query = "INSERT INTO saved_collage (collage_name, collage_path, user_id) "
-					+ "VALUES ('"+title+"','"+filePath+"',"+TEST_USER_ID+");";
+			query = "INSERT INTO saved_collage (title, path, user_id) "
+					+ "VALUES ('"+title+"','"+imgPath+"',"+TEST_USER_ID+");";
 			action = statement.executeUpdate(query);
 				
 			if (action == 1) {
@@ -109,47 +110,24 @@ public class CollageHistoryServletTest extends Mockito {
 	    	collages = servlet.getCollages(); // returns a map of title and image file path
 	    	
 	    	// test_user has collage history, so should return 1 result
-	    	assertTrue(collages.size() == 1);
+		System.out.println(collages.size());
+	    	assertTrue(collages.size() == 2);
     }
-    
-    @Test
-    // Collage history for user empty_user should return 0 collage
-    public void testEmptyCollageHistory () throws Exception {
-	    	HttpServletRequest request = mock(HttpServletRequest.class);
-	    	HttpServletResponse response = mock(HttpServletResponse.class);
-	    	
-	    	when (request.getParameter("user_id")).thenReturn(EMPTY_USER_ID);
-	    	when (request.getSession()).thenReturn(mock(HttpSession.class));
-	    	
-	    	servlet = new CollageHistoryServlet();
-	    	servlet.doGet(request, response);
-	    	
-	    	assertTrue(response != null);
-	    	
-	    	Map<Integer, Map<String, String>> collages = new HashMap<Integer, Map<String, String>>();
-	    	collages = servlet.getCollages(); // returns a map of title and image file path
-	    	
-	    	// empty_user has no collage history, so should return 0 results
-	    	assertTrue(collages.size() == 0);
-    }
-    
+
     @Test
     // Collage history for user non_existant_user should return 0 collage
     public void testNonExistantUser () throws Exception {
-	    	HttpServletRequest request = mock(HttpServletRequest.class);
-	    	HttpServletResponse response = mock(HttpServletResponse.class);
-	    	
-	    	when (request.getParameter("user_id")).thenReturn(NON_EXISTANT_USER_ID);
-	    	when (request.getSession()).thenReturn(mock(HttpSession.class));
-	    	
-	    	servlet = new CollageHistoryServlet();
-	    	servlet.doGet(request, response);
-	    	
-	    	assertTrue(response != null);
-	    	
-	    	Map<Integer, Map<String, String>> collages = new HashMap<Integer,Map<String, String>>();
-	    	collages = servlet.getCollages(); // returns a map of title and image file path
-	    	assertTrue(collages.size() == 0);
+		when (request.getParameter("user_id")).thenReturn(NON_EXISTANT_USER_ID);
+		when (request.getSession()).thenReturn(mock(HttpSession.class));
+
+		servlet = new CollageHistoryServlet();
+		servlet.doGet(request, response);
+
+		assertTrue(response != null);
+
+		Map<Integer, Map<String, String>> collages = new HashMap<Integer,Map<String, String>>();
+		collages = servlet.getCollages(); // returns a map of title and image file path
+		assertTrue(collages.size() == 0);
     }
     
 }

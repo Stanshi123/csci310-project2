@@ -1,8 +1,12 @@
-Given(/^User has navigated to localhost and login successfully$/) do
-  visit "http://localhost:8080/Sprint1/mainpage.jsp"
+Given(/^User has navigated to localhost and login successfully1$/) do
+  visit "https://localhost:8443/index.jsp"
+  fill_in('username', :with => "USC")
+  fill_in('password', :with => "USC")
+  page.find_by_id("loginButton").click()
+  sleep(5.to_i);
 end
 
-Given(/^User is on main Page$/) do
+Given(/^User is on main Page1$/) do
   #Nothing, since localhost automatically redirects to main page
 end
 
@@ -54,12 +58,12 @@ Then(/^there is a save to history button$/) do
   expect(page.find_by_id("search-bar-save-history").native.text).to eq "Save to History"
 end
 
-Then(/^there is a view history button$/) do
-  expect(page.find_by_id("search-bar-view-history").native.text).to eq "View History"
+Then(/^there is an export collage button-PNG$/) do
+  expect(page.find_by_id("search-bar-export-png").native.text).to eq "Export Collage (PNG)"
 end
 
-Then(/^there is an export collage button$/) do
-  expect(page.find_by_id("search-bar-export").native.text).to eq "Export Collage"
+Then(/^there is an export collage button-PDF$/) do
+  expect(page.find_by_id("search-bar-export-pdf").native.text).to eq "Export Collage (PDF)"
 end
 
 Then(/^there is a build collage button$/) do
@@ -70,12 +74,13 @@ Given (/^the User has saved previously built collages$/) do
   fill_in('search-bar-input', :with => "USC")
   fill_in('shape-input', :with => "USC")
   page.find_by_id("search-bar-submit").click()
-  sleep(10.to_i)
-  page.find_by_id("saveButton").click()
+  sleep(30.to_i)
+  page.find_by_id("search-bar-save-history").click()
+  sleep(5.to_i)
 end
 
 Then (/^the collage gallery should show previously built collages corresponding to the User$/) do
-  page.find_by_id("collage-area").text.should != ''
+  page.find_by_id("collage-1", visible: true)
 end
 
 Given (/^the User is building a collage$/) do
@@ -85,23 +90,23 @@ Given (/^the User is building a collage$/) do
 end
 
 Then (/^an animation of loading symbol should show up$/) do
-  page.should have_content("animation");
-  sleep(10.to_i)
+  page.find_by_id("animation", visible: false)
+  sleep(30.to_i)
 end
 
 Given (/^the User failed to build a collage$/) do
   fill_in('search-bar-input', :with => "aiofjalksdjf;lwaejf;sdifja;weakfldsjvioc")
   fill_in('shape-input', :with => "USC")
   page.find_by_id("search-bar-submit").click()
-  sleep(10.to_i)
+  sleep(30.to_i)
 end
 
 Then (/^the main collage space should display an error message "Insufficient number of images found."$/) do
-  page.should have_content("collage-placeholder")
+  expect(page.find_by_id("error-message").native.text).to eq "Insufficient number of images found."
 end
 
-When(/^Export Collage Button is clicked$/) do
-  page.find_by_id("search-bar-export").click()
+When(/^C$/) do
+  page.find_by_id("search-bar-export-png").click()
 end
 
 Then(/^User is able to download PNG of Collage$/) do
@@ -114,3 +119,23 @@ end
 Then(/^Size of Downloaded image is the same as Currently displayed collage$/) do
 end
 =end
+
+Given("the user is building a collage") do
+   # Write code here that turns the phrase above into concrete actions
+end
+
+When("Export Collage-PNG Button is clicked") do
+   # Write code here that turns the phrase above into concrete actions
+end
+
+When("Export Collage Button is clicked") do
+   # Write code here that turns the phrase above into concrete actions
+end
+
+When("Image is successfully exported") do
+   # Write code here that turns the phrase above into concrete actions
+end
+
+Then("Size of Downloaded image is the same as Currently displayed collage") do
+   # Write code here that turns the phrase above into concrete actions
+end

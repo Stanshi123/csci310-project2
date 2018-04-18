@@ -28,7 +28,7 @@ import java.io.File;
 public class SaveToHistoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 //	private static final String rootPathIvy = "/Users/Ivy/Desktop/310/310 Sprint2/WebContent/collages/";
-	private static final String rootPathStan = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages";
+	private static final String rootPathStan = "/Users/zifanshi/Documents/Egalloc-2.0/web/collages/";
 	//private static final String rootPathWilliam = "C:\\Users\\William\\eclipse-workspace\\csci310-project2\\WebContent\\collages/";
 	String result = "";
 	
@@ -52,16 +52,21 @@ public class SaveToHistoryServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int user_id, action = 0;
-		String title, format, img_src;
+		int user_id = -1;
+		int action = 0;
+		String title;
+		String format, img_src;
 		
 		result = "fail";
-		
+
 		user_id = Integer.parseInt(request.getParameter("user_id"));
 		format = request.getParameter("format");
 		title = request.getParameter("title");
 		img_src = request.getParameter("img_src");
-		
+
+		System.out.println("user id is: " + user_id);
+
+
 		String [] parts = img_src.split(",");
 		img_src = parts[1];
 		
@@ -83,7 +88,7 @@ public class SaveToHistoryServlet extends HttpServlet {
 		ResultSet resultSet = null;
 		Connection conn = null;
 		String query = "";
-		
+		int AI_value = 0;
 		try {
 			// establish connection
 			Class.forName("com.mysql.jdbc.Driver");
@@ -96,11 +101,13 @@ public class SaveToHistoryServlet extends HttpServlet {
 			resultSet = statement.executeQuery(query);
 			
 			if (resultSet.next()) {
-				int AI_value = resultSet.getInt("AUTO_INCREMENT");
+				AI_value = resultSet.getInt("AUTO_INCREMENT");
 				
 				// set filepath and write image to file
 				String folderPath = rootPathStan + user_id + "/";
 				String filePath = "collages/"+user_id+"/collage-"+AI_value+"."+format;
+
+				System.out.println("file path is " + filePath);
 
 				File userFolder = new File(folderPath);
 				if(!userFolder.exists()){
@@ -108,15 +115,19 @@ public class SaveToHistoryServlet extends HttpServlet {
 				}
 
 				File outputFile = new File(folderPath + "/collage-"+AI_value+ "." + format);
-				ImageIO.write(image, format, outputFile);
-				
+				if (format != null) {
+					ImageIO.write(image, format, outputFile);
+				}
+
 				// insert image into database
 				query = "INSERT INTO saved_collage (title, path, user_id) VALUES (?, ?, ?);";
-				
+
 				pStatement = conn.prepareStatement(query);
 				pStatement.setString(1, title);
 				pStatement.setString(2, filePath);
 				pStatement.setInt(3, user_id);
+
+				System.out.println("ydjfghiuyftjdhxfgnhjuytgf:" + filePath);
 				action = pStatement.executeUpdate();
 				
 				if (action == 1) {
@@ -145,7 +156,7 @@ public class SaveToHistoryServlet extends HttpServlet {
 		if (response.getWriter() != null) {
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(result);
+			response.getWriter().write(result + "-" + AI_value);
 		}
 	}
 }
