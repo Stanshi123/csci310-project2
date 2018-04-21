@@ -55,5 +55,11 @@ public class Constants {
     public static final int DEFAULT_COST = 16;
     public static final int SIZE = 128;
     public static final Pattern layout = Pattern.compile("\\$31\\$(\\d\\d?)\\$(.{43})");
+    
+    // Collage Builder static variables
+    public static final int NUMBER_OF_ROW = 10;
+    public static final int IMAGE_PER_ROW = 15;
+    public static final int BORDER_PIXEL = 3;
+    public static final int NUMBER_OF_IMAGES = 30;
 
 }
