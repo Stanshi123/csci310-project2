@@ -13,15 +13,11 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+import data.Constants;
+
 public class CollageBuilder {
     protected List<BufferedImage> images;
-
-    private static final int NUMBER_OF_ROW = 10;
-    private static final int IMAGE_PER_ROW = 15;
-    private static final int BORDER_PIXEL = 3;
-
     private String shapeKeyword = "USC";
-
 
     public CollageBuilder() {
         images = new ArrayList<>();
@@ -33,10 +29,11 @@ public class CollageBuilder {
             System.out.println("Read fail");
         }
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < Constants.NUMBER_OF_IMAGES; i++) {
             images.add(image);
         }
     }
+
     public CollageBuilder(List<BufferedImage> images, String shapeKeyword) {
         this.shapeKeyword = shapeKeyword;
         this.images = images;
@@ -61,9 +58,11 @@ public class CollageBuilder {
         }
 
         BufferedImage textImage = new BufferedImage(backGround.getWidth(), backGround.getHeight(), BufferedImage.TYPE_INT_RGB);
+
         Graphics2D g = textImage.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, textImage.getWidth(), textImage.getHeight());
+
         FontRenderContext frc = g.getFontRenderContext();
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, (int)((double)backGround.getWidth() * 1.5)/(shapeKeyword.length()));
         GlyphVector gv = font.createGlyphVector(frc, shapeKeyword);
@@ -71,17 +70,14 @@ public class CollageBuilder {
         int xOff = (width - (int)box.getWidth()) / 2 - (int)box.getX();
         int yOff = (height - (int)box.getHeight()) / 2 - (int)box.getY();
         Shape shape = gv.getOutline(xOff,yOff);
+
         g.setClip(shape);
         g.drawImage(backGround,0,0,null);
         g.setClip(null);
         g.setStroke(new BasicStroke(0));
-        //g.setColor(Color.BLACK);
-        g.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.draw(shape);
         g.dispose();
-
 
         return textImage;
     }
@@ -89,8 +85,8 @@ public class CollageBuilder {
 
     protected BufferedImage createBackgroundImage(int width, int height, boolean addBorder, boolean rotate, Filter filter) {
         BufferedImage collageSpace = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = collageSpace.createGraphics();
 
+        Graphics2D g = collageSpace.createGraphics();
         g.setColor(Color.white);
 
         int imageSize = width * height / 150;
@@ -99,23 +95,26 @@ public class CollageBuilder {
         int imageHeight = (int) Math.sqrt(imageSize / ratio);
         int imageWidth = imageHeight * (int) ratio;
 
-        BufferedImage backgroundImage = resize(images.get( (int) (Math.random() * 30)), width, height);
+        BufferedImage backgroundImage = resize(images.get( (int) (Math.random() * Constants.NUMBER_OF_IMAGES)), width, height);
         g.drawImage(backgroundImage, 0, 0, null);
 
-        for (int i = 0; i < NUMBER_OF_ROW; i++) {
+        for (int i = 0; i < Constants.NUMBER_OF_ROW; i++) {
+            for (int j = 0; j < Constants.IMAGE_PER_ROW; j++) {
 
-            for (int j = 0; j < IMAGE_PER_ROW; j++) {
                 AffineTransform original = g.getTransform();
                 int xCoordinate = j * imageWidth;
                 int yCoordinate = i * imageHeight;
-                BufferedImage image = resize(images.get((int) (Math.random() * 30)), imageWidth, imageHeight);
+
+                // Manipulate image according to user options (with border, rotate, etc.)
+                BufferedImage image = resize(images.get((int) (Math.random() * Constants.NUMBER_OF_IMAGES)), imageWidth, imageHeight);
                 if (addBorder) {
                     image = addBorder(image);
                 }
                 if (rotate) {
-                	    double angle = Math.random() * 90.0 - 45.0;
+                    double angle = Math.random() * 90.0 - 45.0;
                     g.rotate(angle, xCoordinate, yCoordinate);
                 }
+
                 g.drawImage(image, xCoordinate, yCoordinate, null);
                 g.setTransform(original);
             }
@@ -126,14 +125,16 @@ public class CollageBuilder {
     // This method adds border to the image
     protected BufferedImage addBorder(BufferedImage image){
         //create a new image
-        BufferedImage borderedImage = new BufferedImage(image.getWidth() + BORDER_PIXEL * 2,image.getHeight() + BORDER_PIXEL * 2,
+        BufferedImage borderedImage = new BufferedImage(image.getWidth() + Constants.BORDER_PIXEL * 2,image.getHeight() + Constants.BORDER_PIXEL * 2,
                 BufferedImage.TYPE_INT_RGB);
+
         Graphics g = borderedImage.getGraphics();
         g.setColor(Color.white);
         g.fillRect(0,0, borderedImage.getWidth(), borderedImage.getHeight());
 
         //draw the old one on the new one
-        g.drawImage(image,BORDER_PIXEL,BORDER_PIXEL,null);
+        g.drawImage(image,Constants.BORDER_PIXEL,Constants.BORDER_PIXEL,null);
+
         return borderedImage;
     }
 
@@ -149,6 +150,7 @@ public class CollageBuilder {
         return image;
     }
 
+    // Add B/W Filter
     protected BufferedImage addBlackAndWhiteFilter(BufferedImage img)
     {
         int w = img.getWidth();
@@ -156,9 +158,11 @@ public class CollageBuilder {
 
         int limit = 255 * 50 / 100;
 
-        for(int i = 0, j; i < w; ++i) {
-            for(j = 0; j < h; ++j) {
+        for(int i = 0, j; i < w; i++) {
+            for(j = 0; j < h; j++) {
                 Color color = new Color(img.getRGB(i, j));
+
+                // change RGB values
                 if(limit <= color.getRed() || limit <= color.getGreen() || limit <= color.getBlue()) {
                     img.setRGB(i, j, Color.WHITE.getRGB());
                 } else {
@@ -180,7 +184,7 @@ public class CollageBuilder {
         return gray;
     }
 
-
+    // Add Sepia Filter
     protected BufferedImage addSepiaFilter(BufferedImage img, int sepiaIntensity) {
         BufferedImage sepia = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
         // Play around with this.  20 works well and was recommended
@@ -208,26 +212,17 @@ public class CollageBuilder {
                 r = r + (sepiaDepth * 2);
                 g = g + sepiaDepth;
 
-                if (r > 255) {
-                    r = 255;
-                }
-                if (g > 255) {
-                    g = 255;
-                }
-                if (b > 255) {
-                    b = 255;
-                }
+                // value caps
+                if (r > 255) r = 255;
+                if (g > 255) g = 255;
+                if (b > 255) b = 255;
 
                 // Darken blue color to increase sepia effect
                 b -= sepiaIntensity;
 
                 // normalize if out of bounds
-                if (b < 0) {
-                    b = 0;
-                }
-                if (b > 255) {
-                    b = 255;
-                }
+                if (b < 0) b = 0;
+                if (b > 255) b = 255;
 
                 color = new Color(r, g, b, color.getAlpha());
                 sepia.setRGB(x, y, color.getRGB());
