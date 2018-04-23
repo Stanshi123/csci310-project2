@@ -45,7 +45,14 @@ public class ServletEngine extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				
 		/* Check if request is for keyword */
 		// get keyword parameter from HttpServletRequest
 		String keyword = request.getParameter(Constants.KEYWORD_PARAMETER);
@@ -111,20 +118,6 @@ public class ServletEngine extends HttpServlet {
 		response.getWriter().write(json);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	/*
-	// Returns value for SAVED_COLLAGE_ID_PARAMETER in HttpServletRequest
-	private String getSavedCollageIDFromRequest(HttpServletRequest request) {
-		return request.getParameter(Constants.SAVED_COLLAGE_ID_PARAMETER);
-	}*/
-
-
 	// Sends keyword to Server and returns the Result received from Server
 	private Result sendKeywordToServer(String keyword, String shape, int width, int height, String filterString,
 			boolean rotation, boolean border) {
@@ -164,29 +157,4 @@ public class ServletEngine extends HttpServlet {
 			session.setAttribute(Constants.SESSION_SAVED_COLLAGES, savedCollages);
 		}
 	}
-
-	/*
-	// switches currently displayed result with clicked saved collage
-	private void viewSavedCollage(HttpServletRequest request, Integer scID) {
-		HttpSession session = request.getSession();		
-		Result currentResult  = (Result) session.getAttribute(Constants.SESSION_CURRENT_RESULT);
-		
-		@SuppressWarnings("unchecked")
-		List<Result> savedCollages = (List<Result>) session.getAttribute(Constants.SESSION_SAVED_COLLAGES);
-		Result collageToDisplay = null;
-
-		// error is currently being displayed
-		if (currentResult.isFailure()) {
-			collageToDisplay = savedCollages.get(scID);
-			savedCollages.remove(scID.intValue());
-		} else { // collage is currently being displayed
-			collageToDisplay = savedCollages.set(scID, currentResult);
-		}
-		
-		// update current result and savedCollages in session
-		session.setAttribute(Constants.SESSION_SAVED_COLLAGES, savedCollages);		
-		session.setAttribute(Constants.SESSION_CURRENT_RESULT, collageToDisplay);
-	}
-	*/
-
 }
