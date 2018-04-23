@@ -97,7 +97,13 @@ Then (/^the previously built collage should not be saved$/) do
 	page.should have_no_content("collage-5")
 end
 
+Given (/^the user has saved two collages$/) do
+	#Nothing, since the user has already saved several collages
+end
 
+Then (/^a horizontal scroll bar should appear on the main page$/) do
+	page.find("#gallery").should have_css('overflow-x: scroll')
+end
 
 
 

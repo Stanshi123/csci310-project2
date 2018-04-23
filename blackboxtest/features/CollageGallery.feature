@@ -37,3 +37,7 @@ Background:
 		When the User clicks on a collage in the gallery2
 		Then the clicked collage should appear on the main space2
 		And the previously built collage should not be saved
+
+	Scenario: After saving two or more collages, user is able to see them in a scroll bar
+		Given the user has saved two collages
+		Then a horizontal scroll bar should appear on the main page
