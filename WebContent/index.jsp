@@ -11,86 +11,79 @@
 <body>
 
 
-	<div id="title-label">
-		<label>Egalloc</label>
-	</div>
+	<div id="title-label"><label>Egalloc</label></div>
 
 	<div id="login-container">
 		<div id="error_msg"></div>
 		<div id="username-input-container" class="input-container">
-			<label>Username</label> <br> <input id="username" type="text"
-				class="input-box" placeholder="Enter username" name="username">
-		</div>
-		<br>
-		<div id="username-input-container" class="input-container">
-			<label>Password</label> <br> <input id="password"
-				type="password" class="input-box" placeholder="Enter password"
-				name="password">
+			<label>Username</label> <br> 
+			<input id="username" type="text" class="input-box" placeholder="Enter username" name="username">
 		</div>
 
 		<br>
+
+		<div id="username-input-container" class="input-container">
+			<label>Password</label> <br> 
+			<input id="password" type="password" class="input-box" placeholder="Enter password" name="password">
+		</div>
+
+		<br>
+
 		<div id="buttons-container" class="input-container">
 			<button id="loginButton" class="login-page-button">Login</button>
 			<button id="signUpButton" class="login-page-button">Sign Up</button>
 		</div>
-
 	</div>
 
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script>
-		var loginButton = document.querySelector("#loginButton");
 		var error_msg = document.querySelector("#error_msg");
 		var signUpButton = document.querySelector("#signUpButton");
+		var loginButton = document.querySelector("#loginButton");
 
-		signUpButton.onclick = function() {
-			var username = document.querySelector("#username").value;
-			var password = document.querySelector("#password").value;
-
-			if (username == "" || password == "") {
-				error_msg.innerHTML = "A required field is empty.";
-				return false;
-			}
-			$
-					.ajax({
-						url : "${pageContext.request.contextPath}/SignUpServlet",
-						type : "POST",
-						data : {
-							username : username,
-							password : password
-						},
-						success : function(response) {
-							if (response == "success") {
-								window.location
-										.replace("mainpage.jsp");
-							} else {
-								error_msg.innerHTML = "Failed to register. Please try another username";
-							}
-						}
-					});
+		signUpButton.onclick=function() {
+			callServlet("register");
 		}
 
-		loginButton.onclick = function() {
-			var username = document.querySelector("#username").value;
-			var password = document.querySelector("#password").value;
+		loginButton.onclick=function() {
+			callServlet("login");
+		}
 
+		function callServlet(type) {
+
+			// check for empty fields
+			var username = document.querySelector("#username").value;
+			var password = document.querySelector("#password").value;			
 			if (username == "" || password == "") {
 				error_msg.innerHTML = "A required field is empty.";
 				return false;
 			}
+
+			// see if it's register or login
+			var servletName = "${pageContext.request.contextPath}/";
+			var errorMessage = "";
+			if (type == "register") {
+				servletName = servletName + "SignUpServlet";
+				errorMessage = "Failed to register. Please try another username";
+			}
+			else {
+				servletName = servletName + "LoginServlet";
+				errorMessage = "Wrong username/password combination.";
+			}
+
+			// ajax call
 			$.ajax({
-				url : "${pageContext.request.contextPath}/LoginServlet",
-				type : "POST",
-				data : {
-					username : username,
-					password : password
+				url: servletName,
+				type: "POST",
+				data: {
+					username: username,
+					password: password
 				},
-				success : function(response) {
+				success: function(response) {
 					if (response == "success") {
-						window.location
-								.replace("mainpage.jsp");
+						window.location.replace("mainpage.jsp");
 					} else {
-						error_msg.innerHTML = "Wrong username/password combination.";
+						error_msg.innerHTML = errorMessage;
 					}
 				}
 			});
