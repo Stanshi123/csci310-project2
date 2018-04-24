@@ -72,46 +72,67 @@ body{
 	color: black;
 }
 
-.input-box{
-  width: 50%;
-  padding-left: 10px;
-  font-size: 15px;
-  font-family: Serif;
-  border-color: #555;
-  border-width: 1px;
-  background-color: white;
-  padding:5px;
-}
+/* SEARCH & EXPORT BAR */
+/* located in #search-container */
 
-.search-bar-button {
-  padding: 10px;
-  background-color: #555;
-  color: white;
-  font-size: 15px;
-  font-family: Serif;
-}
-
-.option-line{
-  padding-top:5px;
-  padding-bottom:5px;
-}
-
+/* SAVED COLLAGES */
+/* located in #saved-collages */
 #gallery {
-  position: relative;
-  background-color: white;
-  padding: 20px 0;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    margin-bottom: 50px;
 
   /* for horizontal scroll */
-  width: auto;
-  height: 120px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
+    width: 80%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 
 .collage-gallery {
-    margin: 0 10px;
     display: inline-block;
-    width: 210px;
-    height: 120px;
+    width: 400px;
+    height: 300px;
+}
+
+.collage-div {
+    display: inline-block;
+    width: 480px;
+}
+
+.input-box{
+    width: 50%;
+    padding-left: 10px;
+    font-size: 15px;
+    font-family: Serif;
+    border-color: #555;
+    border-width: 1px;
+    background-color: white;
+    padding:5px;
+}
+
+.search-bar-button {
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    font-size: 15px;
+    font-family: Serif;
+}
+
+.option-line{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.delete-button{
+    margin: auto;
+    width: 80px;
+    height: 30px;
+    background-color: #555;
+    color: white;
+    font-size: 15px;
+    font-family: Serif;
 }
